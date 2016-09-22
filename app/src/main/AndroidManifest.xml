@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="rnd.plani.co.kr.dadfarm">
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Main.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Certification.RecieveCertificationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SyncAddressActivity" />
+        <activity android:name=".SyncLoadingActivity" />
+        <activity android:name=".DetailProductActivity" />
+        <activity android:name=".ReviewProductActivity" />
+        <activity android:name=".OrderProductActivity" />
+        <activity android:name=".CompleteOrderActivity" />
+        <activity android:name=".WriteReviewActivity" />
+        <activity android:name=".RegistProductInfoActivity" />
+        <activity android:name=".EditProductInfoActivity" />
+        <activity android:name=".RelationInfoActivity"></activity>
+    </application>
+
+</manifest>
