@@ -14,13 +14,18 @@ import rnd.plani.co.kr.dadfarm.R;
 /**
  * Created by RND on 2016-09-19.
  */
-public class ProductAdapter extends RecyclerView.Adapter {
+public class ProductAdapter extends RecyclerView.Adapter implements OnItemClickListener{
     List<ProductData> items = new ArrayList<>();
 
     public void add(ProductData data){
         items.add(data);
         notifyDataSetChanged();
     }
+
+    public ProductData getItem(int position){
+        return items.get(position);
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_home_item,parent,false);
@@ -30,11 +35,23 @@ public class ProductAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((HomeItemView)holder).setData();
+        ((HomeItemView)holder).setData(items.get(position));
+        ((HomeItemView)holder).setOnItemClickListener(this);
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    private OnItemClickListener itemClickListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        itemClickListener = listener;
+    }
+    @Override
+    public void OnItemClick(View view, int position) {
+        if(itemClickListener!= null){
+            itemClickListener.OnItemClick(view,position);
+        }
     }
 }

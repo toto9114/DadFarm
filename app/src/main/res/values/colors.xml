@@ -8,4 +8,5 @@
     <color name="select_tab">#FF714D</color>
 
     <color name="alert_under_line">#ff0000</color>
+    <color name="black_theme_toolbar">#3D3A38</color>
 </resources>

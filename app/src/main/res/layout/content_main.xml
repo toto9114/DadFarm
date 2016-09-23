@@ -16,4 +16,13 @@
         android:layout_alignParentStart="true"
         app:tabIndicatorHeight="0dp"
         android:fillViewport="false" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/tablayout"
+        android:id="@+id/container"></FrameLayout>
 </RelativeLayout>

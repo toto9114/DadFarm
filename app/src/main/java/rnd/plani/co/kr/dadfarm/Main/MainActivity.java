@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import rnd.plani.co.kr.dadfarm.Home.HomeFragment;
 import rnd.plani.co.kr.dadfarm.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container,new HomeFragment())
+                    .commit();
+        }
     }
 
     @Override
