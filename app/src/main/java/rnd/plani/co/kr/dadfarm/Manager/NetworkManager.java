@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.CookieManager;
@@ -13,11 +15,17 @@ import java.util.List;
 
 import okhttp3.Cache;
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Dispatcher;
+import okhttp3.FormBody;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import rnd.plani.co.kr.dadfarm.Data.AuthData;
+import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
 import rnd.plani.co.kr.dadfarm.MyApplication;
 
 /**
@@ -45,7 +53,6 @@ public class NetworkManager {
         }
         Cache cache = new Cache(cachefile, MAX_CACHE_SIZE);
         builder.cache(cache);
-
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
 //        disableCertificateValidation(context, builder);
@@ -53,6 +60,227 @@ public class NetworkManager {
         mClient = builder.build();
     }
 
+    private static final String STAGE_BASE_URL = "http://restapi-stage.pafarm.kr:9100/api";
+    private static final String PRODUCTION_BASE_URL = "https://restapi.pafarm.kr/api";
+
+    private static final String PAFARM_CLIENT_ID = "H3ok6aSEZRrMsRKvoWpBWkgjE9dnGNUCXuGLWS3l";
+    private static final String PAFARM_CLIENT_SECRET = "absQR2PtJ2A3b2qe5vzSuRRezkkr2a2bv9aYNPeVCKm98kiXXkxYLYh1Ejel4hdBSfLApI3305KH1k4mbXLi2YA59WNI0l5vuDtBLYmyolXhk9NeU2aOXcQ7fPXbDbMB";
+    private static final String CONVERT_URL = "http://restapi-stage.pafarm.kr:9100/api/o/convert-token/";
+
+    public Request convertToken(Context context, String serviceProvider,
+                                String credentials, String token, String userId, OnResultListener<AuthData> listener) {
+
+        String url = STAGE_BASE_URL + "/o/convert-token/";
+//        String url = PRODUCTION_BASE_URL+"/o/convert_token";
+//
+        RequestBody body = null;
+
+        body = new FormBody.Builder()
+                .add("grant_type", "convert_token")
+                .add("client_id", PAFARM_CLIENT_ID)
+                .add("client_secret", PAFARM_CLIENT_SECRET)
+                .add("service_provider", serviceProvider)
+                .add("verify_credentials", credentials)
+                .add("token", token)
+                .add("user_id", userId).build();
+
+
+        final CallbackObject<AuthData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Authorization", "bearer HdV0aQoeC5zDUbtQKLJ9cNOpu46h9K")
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String REFRESH_TOKEN_URL = "http://restapi-stage.pafarm.kr:9100/api/o/token/";
+
+    public Request refreshToken(Context context, String refreshToken, OnResultListener<AuthData> listener) {
+
+        String url = REFRESH_TOKEN_URL;
+//
+        RequestBody body = new FormBody.Builder()
+                .add("grant_type", "refresh_token")
+                .add("client_id", PAFARM_CLIENT_ID)
+                .add("client_secret", PAFARM_CLIENT_SECRET)
+                .add("refresh_token", refreshToken)
+                .build();
+
+
+        final CallbackObject<AuthData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Authorization", "bearer HdV0aQoeC5zDUbtQKLJ9cNOpu46h9K")
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String REVOKE_TOKEN_URL = "http://restapi-stage.pafarm.kr:9100/api/o/revoke-token/";
+
+    public Request revokeToken(Context context, String token, OnResultListener<AuthData> listener) {
+
+        String url = REVOKE_TOKEN_URL;
+//
+        RequestBody body = new FormBody.Builder()
+                .add("grant_type", "refresh_token")
+                .add("client_id", PAFARM_CLIENT_ID)
+                .add("client_secret", PAFARM_CLIENT_SECRET)
+                .add("token", token)
+                .build();
+
+
+        final CallbackObject<AuthData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Authorization", "bearer HdV0aQoeC5zDUbtQKLJ9cNOpu46h9K")
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    public Request getUserInfo(Context context, OnResultListener<MyPersonalData> listener) {
+
+        String url = STAGE_BASE_URL + "/me/";
+
+        final CallbackObject<MyPersonalData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                MyPersonalData data = gson.fromJson(response.body().string(), MyPersonalData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    public Request updateUserInfo(Context context, long id, String firstName, String lastName, OnResultListener<MyPersonalData> listener) {
+
+        String url = STAGE_BASE_URL + "/me/";
+//
+        RequestBody body = new FormBody.Builder()
+                .add("id", String.valueOf(id))
+                .add("first_name",firstName)
+                .add("last_name",lastName)
+                .build();
+
+
+        final CallbackObject<MyPersonalData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer "+PropertyManager.getInstance().getPafarmToken())
+                .put(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                MyPersonalData data = gson.fromJson(response.body().string(), MyPersonalData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
 //    static void disableCertificateValidation(Context context, OkHttpClient.Builder builder) {
 //
 //        try {
@@ -157,7 +385,8 @@ public class NetworkManager {
         IOException exception;
         OnResultListener<T> listener;
     }
-//    public Request sendPhoneNumber(Context context,String phoneNum,
+
+    //    public Request sendPhoneNumber(Context context,String phoneNum,
 //                                  final OnResultListener<> listener) {       //답변 받아오기 네트워크 통신
 //        String url = String.format(BASE_URL + "/question/");
 //
@@ -199,9 +428,9 @@ public class NetworkManager {
     public void cancelAll(Object tag) {
 
     }
+
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-    private static final String BASE_URL = "http://mampago.mamam.ga/apis";
 
 
 }

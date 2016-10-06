@@ -15,7 +15,19 @@
         <activity
             android:name=".Main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/kakaolink_host"
+                    android:scheme="@string/kakao_scheme" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Certification.RecieveCertificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -33,21 +45,54 @@
         <activity
             android:name=".DetailProductInfo.DetailProductActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DetailProductInfo.ReviewProductActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".DetailProductInfo.OrderProductActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".CompleteOrderActivity" />
-        <activity android:name=".WriteReviewActivity" />
-        <activity android:name=".RegistProductInfoActivity" />
-        <activity android:name=".EditProductInfoActivity" />
-        <activity android:name=".RelationInfoActivity" />
+        <activity
+            android:name=".DetailProductInfo.Review.ReviewProductActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailProductInfo.Order.OrderProductActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailProductInfo.Order.CompleteOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailProductInfo.Review.WriteReviewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegistProduct.RegistProductInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditProductInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailProductInfo.Relation.RelationInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="b04680199abbd77aef2186dccacce52a975e095e" />
 
-        <activity android:name=".DetailProductInfo.OrderCompleteActivity"
+        <activity
+            android:name=".DetailProductInfo.Order.OrderCompleteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity
+            android:name=".OrderList.DetailOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver
+            android:name=".MyResultReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.digits.sdk.android.UPLOAD_COMPLETE" />
+                <action android:name="com.digits.sdk.android.UPLOAD_FAILED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".Certification.FindFriendsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

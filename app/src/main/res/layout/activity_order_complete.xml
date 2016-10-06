@@ -4,12 +4,20 @@
     android:id="@+id/activity_order_complete"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rnd.plani.co.kr.dadfarm.DetailProductInfo.OrderCompleteActivity">
-    <rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeToolbar
+    tools:context="rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OrderCompleteActivity">
+    <rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeShareToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="구매후기 작성하기"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_write_review" />
 </RelativeLayout>

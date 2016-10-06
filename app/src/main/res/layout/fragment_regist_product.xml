@@ -1,9 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rnd.plani.co.kr.dadfarm.RegistProductFragment">
+    tools:context="rnd.plani.co.kr.dadfarm.RegistProduct.RegistProductFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:text="+ 판매상품 등록하기"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_regist" />
+    </LinearLayout>
+</RelativeLayout>

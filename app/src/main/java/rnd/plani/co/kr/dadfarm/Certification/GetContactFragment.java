@@ -82,7 +82,10 @@ public class GetContactFragment extends Fragment {
             }
         } else {
             searchContacts();
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            getActivity().finish();
         }
     }
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;

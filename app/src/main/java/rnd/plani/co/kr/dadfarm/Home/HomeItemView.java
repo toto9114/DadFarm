@@ -28,6 +28,7 @@ public class HomeItemView extends RecyclerView.ViewHolder {
     public HomeItemView(View itemView) {
         super(itemView);
         context = itemView.getContext();
+        profileView = (ImageView) itemView.findViewById(R.id.image_profile);
         titleView = (TextView) itemView.findViewById(R.id.text_title);
         mFlowlayout = (FlowLayout) itemView.findViewById(R.id.flowlayout);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -42,10 +43,10 @@ public class HomeItemView extends RecyclerView.ViewHolder {
 
     public void setData(ProductData data){
         titleView.setText(data.title);
-        TagBoxView tagBoxView = new TagBoxView(context);
         for(int i = 0 ; i < 6 ; i++) {
-            tagBoxView.setContent("테스트");
+            TagBoxView tagBoxView = new TagBoxView(context);
+            tagBoxView.setContent("테스트"+ i);
+            mFlowlayout.addView(tagBoxView,FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
         }
-        mFlowlayout.addView(tagBoxView);
     }
 }

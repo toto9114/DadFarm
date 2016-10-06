@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -48,9 +49,11 @@ public class RecieveCertFragment extends Fragment {
                     alertView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
                     return;
                 }
+                PropertyManager.getInstance().setPhoneNum(phone);
                 ((RecieveCertificationActivity)getActivity()).changeInsertCert(phone);
             }
         });
+
         return view;
     }
 

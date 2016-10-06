@@ -32,6 +32,7 @@ public class RecieveCertificationActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     public void changeInsertCert(String phone){
@@ -66,6 +67,6 @@ public class RecieveCertificationActivity extends AppCompatActivity {
                 .commit();
     }
     public void setToolbar(String leftMenu, String title){
-        toolbar.setData(leftMenu, title);
+        toolbar.setToolbar(leftMenu, title);
     }
 }

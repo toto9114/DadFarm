@@ -36,7 +36,7 @@ public class IntroToolbar extends FrameLayout {
         });
     }
 
-    public void setData(String leftMenu, String title){
+    public void setToolbar(String leftMenu, String title){
         leftMenuView.setText(leftMenu);
         titleView.setText(title);
     }

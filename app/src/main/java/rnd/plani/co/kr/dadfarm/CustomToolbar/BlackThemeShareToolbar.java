@@ -12,7 +12,7 @@ import rnd.plani.co.kr.dadfarm.R;
 /**
  * Created by RND on 2016-09-23.
  */
-public class BlackThemeToolbar extends FrameLayout {
+public class BlackThemeShareToolbar extends FrameLayout {
     private OnLeftMenuClickListener leftMenuClickListener;
     public void setOnLeftMenuClickListener(OnLeftMenuClickListener listener){
         leftMenuClickListener = listener;
@@ -23,7 +23,7 @@ public class BlackThemeToolbar extends FrameLayout {
     }
     TextView leftMenuView, titleView;
     ImageView shareView;
-    public BlackThemeToolbar(Context context, AttributeSet attrs) {
+    public BlackThemeShareToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.view_black_theme_toolbar,this);
         leftMenuView = (TextView) findViewById(R.id.text_left_menu);

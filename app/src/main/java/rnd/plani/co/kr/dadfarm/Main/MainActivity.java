@@ -8,7 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import rnd.plani.co.kr.dadfarm.Home.HomeFragment;
+import rnd.plani.co.kr.dadfarm.Notify.NotificationFragment;
+import rnd.plani.co.kr.dadfarm.OrderList.OrderListFragment;
 import rnd.plani.co.kr.dadfarm.R;
+import rnd.plani.co.kr.dadfarm.RegistProduct.RegistProductFragment;
+import rnd.plani.co.kr.dadfarm.Setting.SettingFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +35,33 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                switch (tab.getPosition()){
+                    case 0:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container,new HomeFragment())
+                                .commit();
+                        break;
+                    case 1:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container,new OrderListFragment())
+                                .commit();
+                        break;
+                    case 2:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container,new RegistProductFragment())
+                                .commit();
+                        break;
+                    case 3:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container,new NotificationFragment())
+                                .commit();
+                        break;
+                    case 4:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container,new SettingFragment())
+                                .commit();
+                        break;
+                }
             }
 
             @Override

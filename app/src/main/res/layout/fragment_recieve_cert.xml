@@ -71,7 +71,9 @@
                     android:id="@+id/edit_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:inputType="number|phone" />
 
                 <View
                     android:id="@+id/under_line"
