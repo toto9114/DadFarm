@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
+import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
  * Created by RND on 2016-09-28.
  */
 
-public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewBtnClickListener, OnOrderBtnClickListener {
+public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewBtnClickListener, OnOrderBtnClickListener,OnSmsClickListener,OnPhoneCallClickListener{
     private static final int VIEW_TYPE_COUNT = 5;
     private static final int VIEW_TYPE_TITLE = 0;
     private static final int VIEW_TYPE_RELATION = 1;
@@ -74,8 +76,11 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
                 ((TitleInfoView) holder).setTitleView(data);
                 break;
             case VIEW_TYPE_RELATION:
+                ((RelationListView)holder).setOnSmsClickListener(this);
+                ((RelationListView)holder).setOnPhoneCallClickListener(this);
                 break;
             case VIEW_TYPE_IMAGE:
+                ((ImageListView)holder).setImageList();
                 break;
             case VIEW_TYPE_CONTENT:
                 ((ContentInfoView) holder).setContentView(data);
@@ -115,6 +120,29 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
     public void OnReviewBtnClick() {
         if (reviewBtnClickListener != null) {
             reviewBtnClickListener.OnReviewBtnClick();
+        }
+    }
+
+    private OnSmsClickListener smsClickListener;
+    public void setOnSmsClickListener(OnSmsClickListener listener){
+        smsClickListener = listener;
+    }
+
+    private OnPhoneCallClickListener phoneCallClickListener;
+    public void setOnPhoneCallClickListener(OnPhoneCallClickListener listener){
+        phoneCallClickListener = listener;
+    }
+    @Override
+    public void OnSmsClick(String phoneNum) {
+        if(smsClickListener !=null){
+            smsClickListener.OnSmsClick(phoneNum);
+        }
+    }
+
+    @Override
+    public void OnPhoneCallClick(String phoneNum) {
+        if(phoneCallClickListener != null){
+            phoneCallClickListener.OnPhoneCallClick(phoneNum);
         }
     }
 }

@@ -9,14 +9,28 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:padding="48dp"
+        android:id="@+id/linear_empty">
+
+        <TextView
+            android:text="@string/empty_regist_product_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView7"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp" />
 
         <Button
             android:text="+ 판매상품 등록하기"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_regist" />
+            android:id="@+id/btn_regist"
+            android:background="@drawable/empty_round_rectangle_black_stroke"
+            android:textSize="16sp" />
     </LinearLayout>
+
 </RelativeLayout>

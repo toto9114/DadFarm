@@ -11,13 +11,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-    <rnd.plani.co.kr.dadfarm.PersonVerticalRelationView
+    <rnd.plani.co.kr.dadfarm.PersonRelationView
         android:id="@+id/relation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar">
 
-    </rnd.plani.co.kr.dadfarm.PersonVerticalRelationView>
+    </rnd.plani.co.kr.dadfarm.PersonRelationView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

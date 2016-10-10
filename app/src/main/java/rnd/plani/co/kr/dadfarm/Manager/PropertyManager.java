@@ -62,4 +62,14 @@ public class PropertyManager {
     public String getPafarmToken(){
         return mPref.getString(REG_PAFARM_TOKEN,"");
     }
+
+    private static final String REG_SYNC_DATE = "sync_date";
+    public void setSyncDate(String date){
+        mEditor.putString(REG_SYNC_DATE, date);
+        mEditor.commit();
+    }
+
+    public String getSyncDate(){
+        return mPref.getString(REG_SYNC_DATE,"");
+    }
 }

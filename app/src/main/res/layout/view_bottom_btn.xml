@@ -15,16 +15,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="구매후기"
+            android:textColor="@android:color/white"
             android:id="@+id/btn_review"
             android:layout_gravity="bottom"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/black_theme_toolbar" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="주문하기"
+            android:textColor="@android:color/white"
             android:id="@+id/btn_order"
             android:layout_gravity="bottom"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/black_theme_toolbar" />
     </LinearLayout>
 </LinearLayout>

@@ -8,8 +8,18 @@
     <color name="select_tab">#FF714D</color>
 
     <color name="alert_under_line">#ff0000</color>
-    <color name="black_theme_toolbar">#3D3A38</color>
+    <color name="black_theme_toolbar">#3d3a38</color>
 
     <color name="blue_gray">#219fc1</color>
     <color name="red_gray">#ff783f</color>
+    <color name="detail_product_layout_background">#ececec</color>
+    
+    <color name="inactive_button">#949392</color>
+    <color name="active_button">#3d3a38</color>
+
+    <color name="regist_product_background">#fafafa</color>
+    <color name="add_a_photo_background">#e0e0e0</color>
+
+    <color name="edit_text_edge">#000</color>
+    <color name="splash_color">#EFE3C3</color>
 </resources>

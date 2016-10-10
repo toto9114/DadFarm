@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,16 +21,21 @@ import com.digits.sdk.android.models.DigitsUser;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import rnd.plani.co.kr.dadfarm.CustomToolbar.IntroToolbar;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
 import rnd.plani.co.kr.dadfarm.Main.MainActivity;
+import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
     TextView statusView;
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +59,19 @@ public class FindFriendsActivity extends AppCompatActivity {
                     @Override
                     public void success(Result<Contacts> result) {
                         List<DigitsUser> users = result.data.users;
-                        statusView.setText(getContactCount()+"개의 연락처에서\n"+users.size()
-                        +"명의 아빠농장 친구를 찾았습니다.");
-                        Intent i = new Intent(FindFriendsActivity.this, MainActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        finish();
+                        statusView.setText(getContactCount() + "개의 연락처에서\n" + users.size()
+                                + "명의 아빠농장 친구를 찾았습니다.");
+                        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(FindFriendsActivity.this, MainActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
+                                finish();
+                            }
+                        }, 1000);
                     }
 
                     @Override
@@ -68,6 +82,7 @@ public class FindFriendsActivity extends AppCompatActivity {
             }
         });
     }
+
     String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
     String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " NOT NULL AND " +
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " != ''";
@@ -82,12 +97,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         Cursor c = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
 
         int count = 0;
-        Log.e("FindFriends", ""+count);
+        Log.e("FindFriends", "" + count);
         if (c.moveToFirst()) {
             while (c.moveToNext()) {
                 String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                Log.e("GetContact","name: " + name + ","+ "phone: "+phoneNumber);
+                Log.e("GetContact", "name: " + name + "," + "phone: " + phoneNumber);
                 count++;
             }
         }

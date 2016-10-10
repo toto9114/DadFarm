@@ -6,33 +6,35 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/test_bg" />
+        app:srcCompat="@drawable/test_bg"
+        android:id="@+id/image_picture" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
+            android:text="피로회복에 좋은 유기농 아로니아"
             android:textColor="#fff"
-            android:textSize="24sp"
-            android:text="피로회복에 좋은 유기농 아로니아" />
+            android:textSize="40sp"
+            android:gravity="center" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="36dp"
             android:src="@drawable/avatar"
             app:civ_border_width="2dp" />
 
@@ -41,14 +43,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:text="백승빈의 삼촌"
             android:textColor="#fff"
-            android:text="New Text" />
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp" />
 
         <com.wefika.flowlayout.FlowLayout
             android:id="@+id/flowlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal">
 
         </com.wefika.flowlayout.FlowLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:overScrollMode="never"/>
+
     </LinearLayout>
 </FrameLayout>

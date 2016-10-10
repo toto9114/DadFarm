@@ -3,9 +3,13 @@ package rnd.plani.co.kr.dadfarm;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,20 +45,42 @@ public class SplashActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_READ_CONTACT = 200;
     LinearLayout loginView;
     DigitsAuthButton digitsButton;
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.splash_color));
+        }
+
         loginView = (LinearLayout) findViewById(R.id.linear_login);
+
+        if (!TextUtils.isEmpty(PropertyManager.getInstance().getPafarmToken())) {
+            loginView.setVisibility(View.GONE);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+            },1000);
+        } else {
+            loginView.setVisibility(View.VISIBLE);
+        }
         loginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                digitsButton.performClick();
+                if (!TextUtils.isEmpty(PropertyManager.getInstance().getPafarmToken())) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    digitsButton.performClick();
+                }
             }
         });
-
         digitsButton = (DigitsAuthButton) findViewById(R.id.auth_button);
         digitsButton.setCallback(new AuthCallback() {
             @Override
@@ -112,7 +138,6 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         } else {
                                             Digits.uploadContacts(CONTACT_UPLOAD_REQUEST);
-                                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
                                         }
                                     }
                                 } else {

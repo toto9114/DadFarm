@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText("홈").setIcon(R.drawable.test));
+        tabLayout.addTab(tabLayout.newTab().setText("홈"));
         tabLayout.addTab(tabLayout.newTab().setText("주문목록"));
         tabLayout.addTab(tabLayout.newTab().setText("상품등록"));
         tabLayout.addTab(tabLayout.newTab().setText("알림"));

@@ -2,9 +2,7 @@ package rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailInfo;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -13,45 +11,18 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 
 public class ImageListView extends RecyclerView.ViewHolder {
-    ListView listView;
-    ImageListAdapter mAdapter;
+
+    LinearLayout imageListView;
     public ImageListView(View itemView) {
         super(itemView);
-        listView = (ListView) itemView.findViewById(R.id.listView);
-        mAdapter = new ImageListAdapter();
-        listView.setAdapter(mAdapter);
+        imageListView = (LinearLayout) itemView.findViewById(R.id.linear_image_list);
     }
 
     public void setImageList(){
-
-    }
-
-    public class ImageListAdapter extends BaseAdapter{
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ProductImageView view = null;
-            if(convertView == null){
-                view = new ProductImageView(parent.getContext());
-            }else{
-                view = (ProductImageView) convertView;
-            }
-            view.setImage();
-            return view;
+        for(int i = 0 ; i < 3 ; i ++) {
+            ProductImageView imageView = new ProductImageView(itemView.getContext());
+            imageView.setImage(R.drawable.test_bg);
+            imageListView.addView(imageView);
         }
     }
 }

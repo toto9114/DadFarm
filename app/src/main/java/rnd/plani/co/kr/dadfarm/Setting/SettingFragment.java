@@ -43,7 +43,7 @@ public class SettingFragment extends Fragment {
     MyPersonalData personalData;
     ImageView profileView;
     ImageView syncView;
-    TextView syncDateView;
+    TextView syncDateView, phoneView;
     EditText firstNameView, lastNameView;
     private static final int REQUEST_GALLERY = 100;
 
@@ -57,6 +57,7 @@ public class SettingFragment extends Fragment {
         lastNameView = (EditText) view.findViewById(R.id.edit_last_name);
         profileView = (ImageView) view.findViewById(R.id.image_profile);
         syncDateView = (TextView) view.findViewById(R.id.text_sync_date);
+        phoneView = (TextView) view.findViewById(R.id.text_phone);
         syncView = (ImageView) view.findViewById(R.id.image_sync);
 
         syncView.setOnClickListener(new View.OnClickListener() {
@@ -67,9 +68,9 @@ public class SettingFragment extends Fragment {
                 NetworkManager.getInstance().updateUserInfo(getContext(), personalData.id, firstName, lastName, new NetworkManager.OnResultListener<MyPersonalData>() {
                     @Override
                     public void onSuccess(Request request, MyPersonalData result) {
-                        Toast.makeText(getContext(),result.first_name + result.last_name,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), result.first_name + result.last_name, Toast.LENGTH_SHORT).show();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        syncDateView.setText(sdf.format(new Date()));
+                        syncDateView.setText(sdf.format(new Date()) + "동기화 됨");
                     }
 
                     @Override
@@ -90,21 +91,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<MyPersonalData>() {
-            @Override
-            public void onSuccess(Request request, MyPersonalData result) {
-                if (result != null) {
-                    personalData = result;
-                    firstNameView.setText(result.first_name);
-                    lastNameView.setText(result.last_name);
-                }
-            }
-
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
-
-            }
-        });
         Button btn = (Button) view.findViewById(R.id.btn_logout);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +98,7 @@ public class SettingFragment extends Fragment {
                 NetworkManager.getInstance().revokeToken(getContext(), PropertyManager.getInstance().getPafarmToken(), new NetworkManager.OnResultListener<AuthData>() {
                     @Override
                     public void onSuccess(Request request, AuthData result) {
-                        if(result!=null){
+                        if (result != null) {
 
                         }
                     }
@@ -124,7 +110,31 @@ public class SettingFragment extends Fragment {
                 });
             }
         });
+
+        initData();
         return view;
+    }
+
+
+    private void initData() {
+        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<MyPersonalData>() {
+            @Override
+            public void onSuccess(Request request, MyPersonalData result) {
+                if (result != null) {
+                    personalData = result;
+                    firstNameView.setText(result.first_name);
+                    lastNameView.setText(result.last_name);
+                    phoneView.setText(result.profile.phone_number);
+                }
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        syncDateView.setText(PropertyManager.getInstance().getSyncDate() + "동기화 됨");
     }
 
     @Override
