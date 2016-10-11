@@ -38,5 +38,4 @@ public class RegistProductFragment extends Fragment {
         });
         return view;
     }
-
 }

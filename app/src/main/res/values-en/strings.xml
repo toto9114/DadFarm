@@ -12,6 +12,7 @@
     <string name="edit_last_name_hint">Enter your last name</string>
     <string name="edit_first_name_hint">Enter your first name</string>
     <string name="save_btn">Save</string>
+    <string name="find_friends_count">Contact found on %1$d %2$d pafarm friends.</string>
     <string name="home_menu">Home</string>
     <string name="order_list_menu">Order List</string>
     <string name="regist_product_menu">Add Product</string>
@@ -42,6 +43,7 @@
     <string name="deposit_account">deposit account</string>
     <string name="contact_us">contact us</string>
     <string name="write_reviews">writing reviews</string>
+    <string name="order_list_title">A total of %1$d orders.</string>
     <string name="empty_regist_product_message">There is no added product.\n\npapa, aunts, uncles, etc.. Try adding the product what families are built carefully farming.</string>
     <string name="add_product_btn">add product</string>
     <string name="empty_notify_list_message">No alarm arrives</string>

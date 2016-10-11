@@ -12,6 +12,7 @@
     <string name="edit_last_name_hint">输入您的姓氏</string>
     <string name="edit_first_name_hint">输入你的名字</string>
     <string name="save_btn">保存</string>
+    <string name="find_friends_count">在%2$d的爸爸农场朋友发现%1$d联系人。</string>
     <string name="home_menu">Home</string>
     <string name="order_list_menu">订单</string>
     <string name="regist_product_menu">注册产品</string>
@@ -42,6 +43,7 @@
     <string name="deposit_account">汇款账号</string>
     <string name="contact_us">咨询</string>
     <string name="write_reviews">写后期订单</string>
+    <string name="order_list_title">总共有%1$d个订单</string>
     <string name="empty_regist_product_message">没有注册的产品。\n\n爸爸，阿姨，叔叔等，尝试注册的产品系列都内置认真务农。</string>
     <string name="add_product_btn">购买注册产品</string>
     <string name="empty_notify_list_message">无通知到达。</string>

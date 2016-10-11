@@ -15,6 +15,7 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 android {
@@ -40,6 +41,7 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 }
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -62,4 +64,6 @@ dependencies {
     }
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(':telegramgallery')
+    compile 'com.facebook.android:facebook-android-sdk:4.16.1'
+    compile group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
 }

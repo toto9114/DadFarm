@@ -3,9 +3,10 @@
     <string name="action_settings">Settings</string>
 
 
-    <string name="kakao_app_key">AAAAAAAAAAAAAAAAAAAAAA</string>
-    <string name="kakao_scheme">kakaoAAAAAAAAAAAAAAAAAAAAAA</string>
+    <string name="kakao_app_key">91d177809c86d33a3de38b54ab1cab4b</string>
+    <string name="kakao_scheme">kakao91d177809c86d33a3de38b54ab1cab4b</string>
     <string name="kakaolink_host">kakaolink</string>
+    <string name="facebook_app_id">200585803697788</string>
 
     <string name="regist_cert_title">휴대폰 번호가 몇 번이세요?</string>
     <string name="insert_cert_title">6자리 코드를 보내드렸습니다.</string>
@@ -24,6 +25,7 @@
     <string name="edit_last_name_hint">성을 입력해주세요.</string>
     <string name="edit_first_name_hint">이름을 입력해주세요.</string>
     <string name="save_btn">저장하기</string>
+    <string name="find_friends_count">%1$d개의 연락처에서 %2$d명의 아빠농장 친구를 찾았습니다.</string>
     <string name="home_menu">홈</string>
     <string name="order_list_menu">주문목록</string>
     <string name="regist_product_menu">상품등록</string>
@@ -54,6 +56,7 @@
     <string name="deposit_account">입금계좌</string>
     <string name="contact_us">문의하기</string>
     <string name="write_reviews">구매후기 작성하기</string>
+    <string name="order_list_title">총 %1$d건의 주문내역이 있습니다.</string>
     <string name="empty_regist_product_message">등록된 상품이 없습니다.\n\n아빠, 고모, 삼촌 등 가족들이 정성껏 농사지은 상품을 등록해보세요.</string>
     <string name="add_product_btn">판매상품 등록하기</string>
     <string name="empty_notify_list_message">도착한 알림이 없습니다.</string>

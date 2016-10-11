@@ -25,7 +25,7 @@ import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListen
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Review.ReviewProductActivity;
 import rnd.plani.co.kr.dadfarm.R;
-import rnd.plani.co.kr.dadfarm.ShareDialog;
+import rnd.plani.co.kr.dadfarm.CustomDialog.CustomShareDialog;
 
 public class DetailProductActivity extends AppCompatActivity {
 
@@ -119,8 +119,9 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void OnRightMenuClick() {
                 //공유하기
-                ShareDialog dialog = new ShareDialog();
+                CustomShareDialog dialog = new CustomShareDialog();
                 dialog.show(getSupportFragmentManager(), "dialog");
+
             }
         });
         initData();
