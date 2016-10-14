@@ -1,14 +1,21 @@
 package rnd.plani.co.kr.dadfarm.Main;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import rnd.plani.co.kr.dadfarm.BottomTabMenu.BottomTabMenu;
 import rnd.plani.co.kr.dadfarm.Home.HomeFragment;
@@ -41,31 +48,42 @@ public class MainActivity extends AppCompatActivity {
                 ImageView iconView = (ImageView) tab.getCustomView().findViewById(R.id.image_icon);
                 titleView.setTextColor(selectColor);
                 iconView.setColorFilter(selectColor, PorterDuff.Mode.SRC_IN);
-
+                Animation anim = AnimationUtils.loadAnimation(MainActivity.this,R.anim.rotate);
                 switch (tab.getPosition()) {
                     case 0:
+                        YoYo.with(Techniques.RubberBand)
+                                .duration(500)
+                                .playOn(iconView);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new HomeFragment())
                                 .commit();
                         break;
                     case 1:
+                        YoYo.with(Techniques.RubberBand)
+                                .duration(500)
+                                .playOn(iconView);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new OrderListFragment())
                                 .commit();
                         break;
                     case 2:
+                        iconView.startAnimation(anim);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new RegistProductFragment())
                                 .commit();
                         break;
                     case 3:
+                        YoYo.with(Techniques.RubberBand)
+                                .duration(500)
+                                .playOn(iconView);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new NotificationFragment())
                                 .commit();
                         break;
                     case 4:
+                        iconView.startAnimation(anim);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SettingFragment())
+                                .replace(R.id.container, new SettingFragment(),"settings")
                                 .commit();
                         break;
                 }
@@ -79,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 ImageView iconView = (ImageView) tab.getCustomView().findViewById(R.id.image_icon);
                 titleView.setTextColor(unselectColor);
                 iconView.setColorFilter(unselectColor, PorterDuff.Mode.SRC_IN);
+                iconView.clearAnimation();
             }
 
             @Override
@@ -88,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState == null) {
-
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new HomeFragment())
                     .commit();
@@ -128,5 +146,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment f = getSupportFragmentManager().findFragmentByTag("settings");
+        f.onActivityResult(requestCode,resultCode,data);
     }
 }

@@ -24,11 +24,14 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:inputType="textPersonName"
-            android:ems="10"
+            android:ems="140"
             android:id="@+id/editText4"
-            android:hint="구매후기를 작성해주세요(140자 이내)" />
+            android:hint="구매후기를 작성해주세요(140자 이내)"
+            android:background="@drawable/bg_white_background_gray_stroke"
+            android:padding="8dp"
+            android:gravity="top" />
     </LinearLayout>
 
 

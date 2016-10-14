@@ -54,7 +54,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="test"
         android:layout_marginTop="16dp"
-        android:id="@+id/text_content" />
+        android:id="@+id/text_content"
+        android:text="test" />
 </LinearLayout>

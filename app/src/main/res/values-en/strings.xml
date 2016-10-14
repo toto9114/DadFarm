@@ -48,7 +48,7 @@
     <string name="add_product_btn">add product</string>
     <string name="empty_notify_list_message">No alarm arrives</string>
     <string name="manage_friends">Manage friends</string>
-    <string name="sync_complete_message">synchronization complete</string>
+    <string name="sync_complete_message">%1$s synchronization complete</string>
     <string name="terms_of_service_btn">Terms of service</string>
     <string name="privacy_policy_btn">Privacy policy</string>
     <string name="opensource_license_btn">opensource licenses</string>

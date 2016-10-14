@@ -17,9 +17,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_below="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,10 +34,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:orientation="horizontal"
                     android:padding="16dp"
-                    android:layout_marginBottom="8dp">
+                    android:id="@+id/contact_picker">
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -59,45 +58,47 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView18"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="판매자 이름"
-                        android:layout_gravity="center_vertical" />
+                        android:layout_gravity="center_vertical"
+                        android:text="판매자 이름" />
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/edit_last_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_white_background_gray_stroke"
                         android:hint="성"
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:layout_marginRight="8dp"
                         android:padding="8dp" />
 
                     <EditText
-                        android:id="@+id/editText6"
+                        android:id="@+id/edit_first_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_white_background_gray_stroke"
-                        android:hint="이름"
-                        android:inputType="textPersonName"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        android:background="@drawable/bg_white_background_gray_stroke"
+                        android:hint="이름"
+                        android:textSize="14sp"
+                        android:inputType="textPersonName"
                         android:padding="8dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView19"
@@ -106,13 +107,14 @@
                         android:text="핸드폰 번호" />
 
                     <EditText
-                        android:id="@+id/editText1"
+                        android:id="@+id/edit_phone_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/bg_white_background_gray_stroke"
                         android:ems="10"
                         android:hint="판매자의 핸드폰 번호를 입력하세요"
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
                         android:padding="8dp" />
                 </LinearLayout>
@@ -120,8 +122,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView20"
@@ -137,6 +139,7 @@
                         android:background="@drawable/bg_white_background_gray_stroke"
                         android:ems="10"
                         android:hint="아빠, 엄마, 삼촌, 고모, ..."
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
                         android:padding="8dp" />
                 </LinearLayout>
@@ -144,8 +147,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView21"
@@ -161,6 +164,7 @@
                         android:background="@drawable/bg_white_background_gray_stroke"
                         android:ems="10"
                         android:hint="아들, 딸, 조카, 손녀"
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
                         android:padding="8dp" />
                 </LinearLayout>
@@ -171,33 +175,34 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:ems="10"
+                    android:hint="@string/enter_title_hint"
+                    android:textSize="14sp"
                     android:inputType="textPersonName"
-                    android:padding="8dp"
-                    android:hint="@string/enter_title_hint" />
+                    android:padding="8dp" />
 
 
             </LinearLayout>
 
             <!--<LinearLayout-->
-                <!--android:id="@+id/linear_image_list"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="vertical">-->
-        <!--</LinearLayout>-->
+            <!--android:id="@+id/linear_image_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+            <!--</LinearLayout>-->
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </ListView>
+                android:layout_height="wrap_content"
+                android:divider="@null"></ListView>
 
 
             <FrameLayout
+                android:id="@+id/btn_pick"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@color/add_a_photo_background"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:id="@+id/btn_pick">
+                android:background="@color/add_a_photo_background">
 
                 <ImageView
                     android:id="@+id/imageView8"
@@ -211,8 +216,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/regist_photo_message"
-                android:padding="8dp" />
+                android:textColor="@color/blue_gray"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -222,44 +229,67 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp" />
+                    android:hint="상세설명을 정성껏 입력해주세요. (255자 이내)"
+                    android:textSize="14sp"
+                    android:ems="255"
+                    android:gravity="top"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:hint="상품 생산지(주소)"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:hint="상품명 및 판매단위 예) 유기농 노란감자 10kg"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:hint="판매가격(원단위, 배송비 포함)"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:hint="입금은행 예) 농협, 국민은행, 우리은행 등"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:hint="계좌번호 예) 111-2222-33-4444"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_background_gray_stroke"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_background_gray_stroke" />
+                    android:hint="예금주명 예)홍길동"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,6 +1,7 @@
 package rnd.plani.co.kr.dadfarm.Home;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,7 @@ public class HomeItemView extends RecyclerView.ViewHolder {
     }
 
     TextView titleView;
-    ImageView profileView;
+    ImageView profileView, pictureView;
     FlowLayout mFlowlayout;
     RecyclerView recyclerView;
     HorizontalRelationAdapter mAdapter;
@@ -36,6 +37,7 @@ public class HomeItemView extends RecyclerView.ViewHolder {
         super(itemView);
         context = itemView.getContext();
         profileView = (ImageView) itemView.findViewById(R.id.image_profile);
+        pictureView = (ImageView) itemView.findViewById(R.id.image_picture);
         titleView = (TextView) itemView.findViewById(R.id.text_title);
         mFlowlayout = (FlowLayout) itemView.findViewById(R.id.flowlayout);
         recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler);
@@ -51,6 +53,10 @@ public class HomeItemView extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+//        pictureView.setAlpha(0.3f);
+
+        pictureView.setColorFilter(ContextCompat.getColor(itemView.getContext(),R.color.image_opacity));
     }
 
     public void setData(ProductData data){

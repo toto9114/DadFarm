@@ -48,7 +48,7 @@
     <string name="add_product_btn">购买注册产品</string>
     <string name="empty_notify_list_message">无通知到达。</string>
     <string name="manage_friends">管理朋友</string>
-    <string name="sync_complete_message">同步完成</string>
+    <string name="sync_complete_message">%1$s 同步完成</string>
     <string name="terms_of_service_btn">服务条款</string>
     <string name="privacy_policy_btn">隐私政策</string>
     <string name="opensource_license_btn">开源许可证</string>

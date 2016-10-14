@@ -59,4 +59,7 @@ public class BlackThemeTextToolbar extends FrameLayout {
         titleView.setText(title);
         rightMenuView.setText(rightMenu);
     }
+    public void setTitle(String title){
+        titleView.setText(title);
+    }
 }

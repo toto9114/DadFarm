@@ -163,7 +163,7 @@ public class NetworkManager {
 
     private static final String REVOKE_TOKEN_URL = "http://restapi-stage.pafarm.kr:9100/api/o/revoke-token/";
 
-    public Request revokeToken(Context context, String token, OnResultListener<AuthData> listener) {
+    public Request revokeToken(Context context, String token, OnResultListener<Boolean> listener) {
 
         String url = REVOKE_TOKEN_URL;
 //
@@ -175,7 +175,7 @@ public class NetworkManager {
                 .build();
 
 
-        final CallbackObject<AuthData> callbackObject = new CallbackObject<>();
+        final CallbackObject<Boolean> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
                 .tag(context)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -197,8 +197,13 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
-                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
-                callbackObject.result = data;
+                if(response.code() == 200){
+                    callbackObject.result = true;
+                }else{
+                    callbackObject.result = false;
+                }
+//                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
+
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
             }

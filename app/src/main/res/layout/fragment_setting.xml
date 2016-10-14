@@ -11,15 +11,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="24dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="24dp"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="24dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="24dp"
             android:orientation="vertical">
 
             <FrameLayout
@@ -53,7 +53,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/textView11"
@@ -67,7 +68,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:padding="4dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,7 +90,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:background="@drawable/bg_white_background_gray_stroke"
+                    android:padding="4dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -131,17 +136,17 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_terms"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/empty_round_rectangle_black_stroke"
                     android:text="@string/terms_of_service_btn" />
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btn_policy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/empty_round_rectangle_black_stroke"
                     android:text="@string/privacy_policy_btn" />
@@ -149,15 +154,15 @@
                 <Button
                     android:id="@+id/button2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/empty_round_rectangle_black_stroke"
                     android:text="@string/opensource_license_btn" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/btn_delete_account"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/empty_round_rectangle_black_stroke"
                     android:text="@string/delete_account_btn" />
@@ -165,7 +170,7 @@
                 <Button
                     android:id="@+id/btn_logout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:background="@drawable/empty_round_rectangle_black_stroke"
                     android:text="@string/logout_btn" />
             </LinearLayout>

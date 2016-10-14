@@ -1,7 +1,9 @@
 package rnd.plani.co.kr.dadfarm.DetailProductInfo.Order;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -31,7 +33,9 @@ public class OrderProductActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        }
         unitView = (EditText) findViewById(R.id.edit_unit);
         addressView = (EditText) findViewById(R.id.edit_address);
         recieverView = (EditText) findViewById(R.id.edit_reciever);

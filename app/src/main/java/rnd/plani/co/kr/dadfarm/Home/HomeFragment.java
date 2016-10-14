@@ -57,7 +57,8 @@ public class HomeFragment extends Fragment {
     private void initData(){
         ProductData data = new ProductData();
         data.title = "피로회복에 좋은 유기농 아로니아";
-        data.content ="내용";
+        data.content ="피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아피로회복에 좋은 유기농 아로니아";
+        mAdapter.add(data);
         mAdapter.add(data);
     }
 

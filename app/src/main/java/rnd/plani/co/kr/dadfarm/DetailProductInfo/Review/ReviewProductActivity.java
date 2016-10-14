@@ -1,7 +1,9 @@
 package rnd.plani.co.kr.dadfarm.DetailProductInfo.Review;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -31,7 +33,9 @@ public class ReviewProductActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        }
         recyclerView = (FamiliarRecyclerView) findViewById(R.id.recycler);
         mAdaper = new ReviewAdapter();
         layoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL,false);

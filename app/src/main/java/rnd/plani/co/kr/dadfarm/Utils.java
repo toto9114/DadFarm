@@ -1,5 +1,9 @@
 package rnd.plani.co.kr.dadfarm;
 
+import android.app.Activity;
+import android.graphics.Point;
+import android.os.Build;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -9,6 +13,20 @@ import android.widget.ListView;
  * Created by RND on 2016-09-12.
  */
 public class Utils {
+
+    public static int getScreenHeight(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            Point point = new Point();
+            display.getSize(point);
+
+            return point.y;
+        }
+
+        return display.getHeight();
+    }
+
     public static int getStatusBarHeight() {
         int result = 0;
         int resourceId = MyApplication.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");

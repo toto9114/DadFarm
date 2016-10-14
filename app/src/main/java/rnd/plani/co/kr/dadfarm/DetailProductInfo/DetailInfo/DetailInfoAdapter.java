@@ -20,7 +20,7 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
     private static final int VIEW_TYPE_RELATION = 1;
     private static final int VIEW_TYPE_IMAGE = 2;
     private static final int VIEW_TYPE_CONTENT = 3;
-    private static final int VIEW_TYPE_BUTTON = 4;
+    private static final int VIEW_TYPE_EMPTY = 4;
 
     @Override
     public int getItemViewType(int position) {
@@ -34,7 +34,7 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
             case 3:
                 return VIEW_TYPE_CONTENT;
             case 4:
-                return VIEW_TYPE_BUTTON;
+                return VIEW_TYPE_EMPTY;
         }
         return super.getItemViewType(position);
     }
@@ -56,9 +56,9 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
             case VIEW_TYPE_CONTENT:
                 view = inflater.inflate(R.layout.view_content_info, parent, false);
                 return new ContentInfoView(view);
-            case VIEW_TYPE_BUTTON:
-                view = inflater.inflate(R.layout.view_bottom_btn, parent, false);
-                return new BottomBtnView(view);
+            case VIEW_TYPE_EMPTY:
+                view = inflater.inflate(R.layout.view_bottom_empty, parent, false);
+                return new BottomEmptyView(view);
         }
         return null;
     }
@@ -85,9 +85,8 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
             case VIEW_TYPE_CONTENT:
                 ((ContentInfoView) holder).setContentView(data);
                 break;
-            case VIEW_TYPE_BUTTON:
-                ((BottomBtnView)holder).setOnReviewBtnClickListener(this);
-                ((BottomBtnView)holder).setOnOrderBtnClickListener(this);
+            case VIEW_TYPE_EMPTY:
+
                 break;
         }
     }

@@ -5,32 +5,56 @@
     tools:context="rnd.plani.co.kr.dadfarm.RegistProduct.RegistProductFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/title_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:padding="48dp"
-        android:id="@+id/linear_empty">
+        android:background="@color/black_theme_toolbar">
 
         <TextView
-            android:text="@string/empty_regist_product_message"
+            android:id="@+id/text_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView7"
+            android:layout_height="48dp"
             android:gravity="center"
-            android:layout_marginBottom="16dp"
-            android:textSize="16sp" />
+            android:text="0개의 상품을 중계하고 있습니다"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
-        <Button
-            android:text="+ 판매상품 등록하기"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_label">
+        <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+        <LinearLayout
+            android:id="@+id/linear_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_regist"
-            android:background="@drawable/empty_round_rectangle_black_stroke"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="48dp">
 
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="@string/empty_regist_product_message"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/btn_regist"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/empty_round_rectangle_black_stroke"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_plus"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>

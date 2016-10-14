@@ -1,6 +1,8 @@
 package rnd.plani.co.kr.dadfarm.BottomTabMenu;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,10 +33,16 @@ public class BottomTabMenu extends FrameLayout{
     }
 
     public void setTabMenu(int menuType){
+        int selectColor = ContextCompat.getColor(getContext(),R.color.select_tab);
+        int unselectColor = ContextCompat.getColor(getContext(),R.color.unselect_tab);
+        titleView.setTextColor(unselectColor);
+        iconView.setColorFilter(unselectColor, PorterDuff.Mode.SRC_IN);
         switch (menuType){
             case HOME_MENU:
                 titleView.setText(R.string.home_menu);
+                titleView.setTextColor(selectColor);
                 iconView.setImageResource(R.drawable.ic_home_black);
+                iconView.setColorFilter(selectColor, PorterDuff.Mode.SRC_IN);
                 break;
             case ORDER_LIST_MENU:
                 titleView.setText(R.string.order_list_menu);

@@ -5,25 +5,29 @@
     tools:context=".OrderList.OrderListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/text_title"
+    <FrameLayout
+        android:id="@+id/title_label"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/black_theme_toolbar"
-        android:gravity="center"
-        android:text="총 0건의 주문내역이 있습니다"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:background="@color/black_theme_toolbar">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="총 0건의 주문내역이 있습니다"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/text_title">
+        android:layout_below="@+id/title_label">
 
-        <android.support.v7.widget.RecyclerView
+        <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
