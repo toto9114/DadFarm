@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DadFarm.iml" filepath="$PROJECT_DIR$/DadFarm.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/telegramgallery/telegramgallery.iml" filepath="$PROJECT_DIR$/telegramgallery/telegramgallery.iml" />
     </modules>
   </component>
 </project>
