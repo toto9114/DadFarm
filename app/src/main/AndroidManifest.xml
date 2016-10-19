@@ -7,6 +7,16 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission
+        android:name="rnd.plani.co.kr.dadfarm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="rnd.plani.co.kr.dadfarm.permission.C2D_MESSAGE" />
 
     <application
         android:name=".MyApplication"
@@ -107,7 +117,39 @@
             android:name=".Certification.FindFriendsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
-        <activity android:name=".Setting.PolicyActivity"></activity>
+        <activity android:name=".Setting.PolicyActivity" />
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="rnd.plani.co.kr.dadfarm" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".GCM.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".GCM.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".GCM.RegistrationIntentService"
+            android:exported="false" />
+
+        <activity android:name=".Certification.InsertNameActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

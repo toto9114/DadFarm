@@ -13,6 +13,7 @@ import com.wefika.flowlayout.FlowLayout;
 
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -24,6 +25,11 @@ public class HomeItemView extends RecyclerView.ViewHolder {
     private OnItemClickListener itemClickListener;
     public void setOnItemClickListener(OnItemClickListener listener){
         itemClickListener = listener;
+    }
+
+    private OnProfileClickListener profileClickListener;
+    public void setOnProfileClickListener(OnProfileClickListener listener){
+        profileClickListener = listener;
     }
 
     TextView titleView;
@@ -50,6 +56,22 @@ public class HomeItemView extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 if(itemClickListener != null){
                     itemClickListener.OnItemClick(v,getAdapterPosition());
+                }
+            }
+        });
+        profileView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(profileClickListener != null){
+                    profileClickListener.OnProfileClick();
+                }
+            }
+        });
+        mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
+            @Override
+            public void OnProfileClick() {
+                if(profileClickListener!=null){
+                    profileClickListener.OnProfileClick();
                 }
             }
         });

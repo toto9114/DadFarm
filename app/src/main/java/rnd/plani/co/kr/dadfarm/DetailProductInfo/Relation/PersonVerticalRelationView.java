@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -16,21 +17,30 @@ import rnd.plani.co.kr.dadfarm.R;
 public class PersonVerticalRelationView extends FrameLayout {
 
     private OnSmsClickListener smsClickListener;
-    public void setOnSmsClickListener(OnSmsClickListener listener){
+
+    public void setOnSmsClickListener(OnSmsClickListener listener) {
         smsClickListener = listener;
     }
+
     private OnPhoneCallClickListener phoneCallClickListener;
-    public void setOnPhoneCallClickListener(OnPhoneCallClickListener listener){
+
+    public void setOnPhoneCallClickListener(OnPhoneCallClickListener listener) {
         phoneCallClickListener = listener;
     }
 
+    private OnProfileClickListener profileClickListener;
+
+    public void setOnProfileClickListener(OnProfileClickListener listener) {
+        profileClickListener = listener;
+    }
+
     ImageView profileView;
-    TextView nameView,roleView;
+    TextView nameView, roleView;
     ImageView smsView, phoneCallView;
 
     public PersonVerticalRelationView(Context context) {
         super(context);
-        inflate(getContext(),R.layout.view_vertical_person_relation,this);
+        inflate(getContext(), R.layout.view_vertical_person_relation, this);
         profileView = (ImageView) findViewById(R.id.image_profile);
         nameView = (TextView) findViewById(R.id.text_name);
         roleView = (TextView) findViewById(R.id.text_role);
@@ -40,7 +50,7 @@ public class PersonVerticalRelationView extends FrameLayout {
         smsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(smsClickListener!=null){
+                if (smsClickListener != null) {
                     smsClickListener.OnSmsClick(relationData.phone);
                 }
             }
@@ -49,15 +59,25 @@ public class PersonVerticalRelationView extends FrameLayout {
         phoneCallView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(phoneCallClickListener != null){
+                if (phoneCallClickListener != null) {
                     phoneCallClickListener.OnPhoneCallClick(relationData.phone);
+                }
+            }
+        });
+
+        profileView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(profileClickListener != null){
+                    profileClickListener.OnProfileClick();
                 }
             }
         });
     }
 
     RelationData relationData;
-    public void setPersonView(RelationData data){
+
+    public void setPersonView(RelationData data) {
         relationData = data;
         nameView.setText(data.name);
         roleView.setText(data.role);

@@ -30,7 +30,9 @@ import rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailInfo.OnReviewBtnClickList
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OrderProductActivity;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
+import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.RelationInfoActivity;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Review.ReviewProductActivity;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
 
@@ -89,6 +91,13 @@ public class DetailProductActivity extends AppCompatActivity {
                     Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:010-1234-1234"));
                     startActivity(intent);
                 }
+            }
+        });
+        mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
+            @Override
+            public void OnProfileClick() {
+                Intent i = new Intent(DetailProductActivity.this, RelationInfoActivity.class);
+                startActivity(i);
             }
         });
         reviewView = (TextView) findViewById(R.id.btn_review);

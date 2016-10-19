@@ -24,12 +24,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_label">
-        <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
-            android:id="@+id/recycler"
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+            <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
         <LinearLayout
             android:id="@+id/linear_empty"
             android:layout_width="match_parent"

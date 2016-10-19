@@ -17,7 +17,7 @@ public class MyResultReceiver extends BroadcastReceiver {
         if (ContactsUploadService.UPLOAD_COMPLETE.equals(intent.getAction())) {
             ContactsUploadResult result = intent
                     .getParcelableExtra(ContactsUploadService.UPLOAD_COMPLETE_EXTRA);
-
+            int count = result.totalCount;
             // Post success notification
         } else {
             // Post failure notification

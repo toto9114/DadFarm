@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 
 /**
  * Created by RND on 2016-09-28.
  */
 
-public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, OnPhoneCallClickListener {
+public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, OnPhoneCallClickListener, OnProfileClickListener {
     List<RelationData> items = new ArrayList<>();
 
     private static final int VIEW_TYPE_PERSON = 0;
@@ -66,18 +67,19 @@ public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, 
                 personView.setPersonView(items.get(position));
                 personView.setOnPhoneCallClickListener(this);
                 personView.setOnSmsClickListener(this);
+                personView.setOnProfileClickListener(this);
                 return personView;
             case VIEW_TYPE_RELATION:
                 RelationDivider divider;
-                if(convertView == null){
+                if (convertView == null) {
                     divider = new RelationDivider(parent.getContext());
-                }else{
+                } else {
                     divider = (RelationDivider) convertView;
                 }
                 divider.setRelation(items.get(position).relation);
                 return divider;
         }
-        return  null;
+        return null;
     }
 
 //    @Override
@@ -126,6 +128,11 @@ public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, 
         phoneCallClickListener = listener;
     }
 
+    private OnProfileClickListener profileClickListener;
+
+    public void setOnProfileClickListener(OnProfileClickListener listener) {
+        profileClickListener = listener;
+    }
 
     @Override
     public void OnPhoneCallClick(String phoneNum) {
@@ -138,6 +145,13 @@ public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, 
     public void OnSmsClick(String phoneNum) {
         if (smsClickListener != null) {
             smsClickListener.OnSmsClick(phoneNum);
+        }
+    }
+
+    @Override
+    public void OnProfileClick() {
+        if (profileClickListener != null) {
+            profileClickListener.OnProfileClick();
         }
     }
 }

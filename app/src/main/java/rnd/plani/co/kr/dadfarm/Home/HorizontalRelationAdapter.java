@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
  * Created by toto9114 on 2016-10-06.
  */
 
-public class HorizontalRelationAdapter extends RecyclerView.Adapter {
+public class HorizontalRelationAdapter extends RecyclerView.Adapter implements OnProfileClickListener{
     List<RelationData> items = new ArrayList<>();
 
     private static final int VIEW_TYPE_PERSON = 0;
@@ -53,6 +54,7 @@ public class HorizontalRelationAdapter extends RecyclerView.Adapter {
         switch (getItemViewType(position)){
             case VIEW_TYPE_PERSON:
                 ((PersonHorizontalView)holder).setProfile();
+                ((PersonHorizontalView)holder).setOnProfileClickListener(this);
                 break;
             case VIEW_TYPE_RELATION:
                 ((HorizontalRelationDivider)holder).setRelation(items.get(position).relation);
@@ -63,5 +65,16 @@ public class HorizontalRelationAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    private OnProfileClickListener profileClickListener;
+    public void setOnProfileClickListener(OnProfileClickListener listener){
+        profileClickListener = listener;
+    }
+    @Override
+    public void OnProfileClick() {
+        if(profileClickListener != null){
+            profileClickListener.OnProfileClick();
+        }
     }
 }

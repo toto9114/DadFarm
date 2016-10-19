@@ -9,5 +9,5 @@ public class MyProfile {
     public String uid;
     public String owner;
     public String phone_number;
-    public String image;
+    public String image_url;
 }

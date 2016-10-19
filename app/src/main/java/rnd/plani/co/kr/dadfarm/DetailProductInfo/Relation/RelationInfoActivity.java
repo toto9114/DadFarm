@@ -1,5 +1,7 @@
 package rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation;
 
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -17,6 +19,9 @@ public class RelationInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relation_info);
         BlackThemeTextToolbar toolbar = (BlackThemeTextToolbar) findViewById(R.id.toolbar);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        }
         toolbar.setToolbar("뒤로","이름","저장");
         toolbar.setOnLeftMenuClickListener(new OnLeftMenuClickListener() {
             @Override

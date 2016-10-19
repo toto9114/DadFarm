@@ -24,4 +24,7 @@
     <color name="edit_text_edge">#000</color>
     <color name="splash_color">#EFE3C3</color>
     <color name="image_opacity">#5f3f3d3e</color>
+
+    <color name="black">#000</color>
+    <color name="gray">#dfdfdf</color>
 </resources>

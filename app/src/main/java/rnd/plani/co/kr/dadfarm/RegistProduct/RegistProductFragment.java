@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class RegistProductFragment extends Fragment {
     FrameLayout titleLabelView;
     LinearLayout emptyView;
     FamiliarRecyclerView recyclerView;
+    SwipeRefreshLayout refreshLayout;
     AddedProductAdapter mAdapter;
     LinearLayoutManager layoutManager;
 
@@ -48,6 +50,7 @@ public class RegistProductFragment extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             titleLabelView.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
         }
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         titleView = (TextView) view.findViewById(R.id.text_title);
         emptyView = (LinearLayout) view.findViewById(R.id.linear_empty);
         addProductBtn = (ImageView) view.findViewById(R.id.btn_regist);
@@ -63,6 +66,14 @@ public class RegistProductFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(refreshLayout.isRefreshing()){
+                    refreshLayout.setRefreshing(false);
+                }
+            }
+        });
         recyclerView.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
@@ -101,6 +112,6 @@ public class RegistProductFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
-        titleView.setText(mAdapter.getItemCount() + "개의 상품을 중계하고 있습니다");
+        titleView.setText(mAdapter.getItemCount() - AddedProductAdapter.HEADER_SIZE + "개의 상품을 중계하고 있습니다");
     }
 }

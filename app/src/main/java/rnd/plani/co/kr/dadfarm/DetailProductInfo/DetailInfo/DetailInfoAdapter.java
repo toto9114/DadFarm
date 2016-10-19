@@ -8,13 +8,14 @@ import android.view.ViewGroup;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
  * Created by RND on 2016-09-28.
  */
 
-public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewBtnClickListener, OnOrderBtnClickListener,OnSmsClickListener,OnPhoneCallClickListener{
+public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewBtnClickListener, OnOrderBtnClickListener, OnSmsClickListener, OnPhoneCallClickListener, OnProfileClickListener {
     private static final int VIEW_TYPE_COUNT = 5;
     private static final int VIEW_TYPE_TITLE = 0;
     private static final int VIEW_TYPE_RELATION = 1;
@@ -76,11 +77,12 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
                 ((TitleInfoView) holder).setTitleView(data);
                 break;
             case VIEW_TYPE_RELATION:
-                ((RelationListView)holder).setOnSmsClickListener(this);
-                ((RelationListView)holder).setOnPhoneCallClickListener(this);
+                ((RelationListView) holder).setOnSmsClickListener(this);
+                ((RelationListView) holder).setOnPhoneCallClickListener(this);
+                ((RelationListView) holder).setOnProfileClickListener(this);
                 break;
             case VIEW_TYPE_IMAGE:
-                ((ImageListView)holder).setImageList();
+                ((ImageListView) holder).setImageList();
                 break;
             case VIEW_TYPE_CONTENT:
                 ((ContentInfoView) holder).setContentView(data);
@@ -123,25 +125,41 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
     }
 
     private OnSmsClickListener smsClickListener;
-    public void setOnSmsClickListener(OnSmsClickListener listener){
+
+    public void setOnSmsClickListener(OnSmsClickListener listener) {
         smsClickListener = listener;
     }
 
     private OnPhoneCallClickListener phoneCallClickListener;
-    public void setOnPhoneCallClickListener(OnPhoneCallClickListener listener){
+
+    public void setOnPhoneCallClickListener(OnPhoneCallClickListener listener) {
         phoneCallClickListener = listener;
     }
+
+    private OnProfileClickListener profileClickListener;
+
+    public void setOnProfileClickListener(OnProfileClickListener listener) {
+        profileClickListener = listener;
+    }
+
     @Override
     public void OnSmsClick(String phoneNum) {
-        if(smsClickListener !=null){
+        if (smsClickListener != null) {
             smsClickListener.OnSmsClick(phoneNum);
         }
     }
 
     @Override
     public void OnPhoneCallClick(String phoneNum) {
-        if(phoneCallClickListener != null){
+        if (phoneCallClickListener != null) {
             phoneCallClickListener.OnPhoneCallClick(phoneNum);
+        }
+    }
+
+    @Override
+    public void OnProfileClick() {
+        if (profileClickListener != null) {
+            profileClickListener.OnProfileClick();
         }
     }
 }

@@ -19,7 +19,7 @@ import rnd.plani.co.kr.dadfarm.R;
 public class AddedProductAdapter extends RecyclerView.Adapter implements OnHeaderViewClickListener{
     List<ProductData> items = new ArrayList<>();
 
-    private static final int HEADER_SIZE = 1;
+    public static final int HEADER_SIZE = 1;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_PRODUCT = 1;
 

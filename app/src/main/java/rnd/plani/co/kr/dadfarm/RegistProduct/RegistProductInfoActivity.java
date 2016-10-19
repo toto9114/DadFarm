@@ -98,7 +98,7 @@ public class RegistProductInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent();
-//                intent.setType("image/*");
+//                intent.setType("image_url/*");
 //                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                startActivityForResult(intent, REQUEST_PICK_PICTURE);
@@ -109,7 +109,7 @@ public class RegistProductInfoActivity extends AppCompatActivity {
         contactPickerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 startActivityForResult(intent, REQUEST_PICK_CONTACT);
             }
         });

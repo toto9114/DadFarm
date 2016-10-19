@@ -20,12 +20,15 @@ import okhttp3.Dispatcher;
 import okhttp3.FormBody;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import rnd.plani.co.kr.dadfarm.Data.AuthData;
 import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
+import rnd.plani.co.kr.dadfarm.Data.MyProfile;
+import rnd.plani.co.kr.dadfarm.Data.TermsOrPrivacy;
 import rnd.plani.co.kr.dadfarm.MyApplication;
 
 /**
@@ -65,8 +68,72 @@ public class NetworkManager {
 
     private static final String PAFARM_CLIENT_ID = "H3ok6aSEZRrMsRKvoWpBWkgjE9dnGNUCXuGLWS3l";
     private static final String PAFARM_CLIENT_SECRET = "absQR2PtJ2A3b2qe5vzSuRRezkkr2a2bv9aYNPeVCKm98kiXXkxYLYh1Ejel4hdBSfLApI3305KH1k4mbXLi2YA59WNI0l5vuDtBLYmyolXhk9NeU2aOXcQ7fPXbDbMB";
-    private static final String CONVERT_URL = "http://restapi-stage.pafarm.kr:9100/api/o/convert-token/";
+    public Request getTerms(Context context, OnResultListener<TermsOrPrivacy> listener) {
 
+        String url = STAGE_BASE_URL + "/terms/";
+
+        final CallbackObject<TermsOrPrivacy> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                TermsOrPrivacy data = gson.fromJson(response.body().string(), TermsOrPrivacy.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+    public Request getPrivacy(Context context, OnResultListener<TermsOrPrivacy> listener) {
+
+        String url = STAGE_BASE_URL + "/privacy/";
+
+        final CallbackObject<TermsOrPrivacy> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                TermsOrPrivacy data = gson.fromJson(response.body().string(), TermsOrPrivacy.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
     public Request convertToken(Context context, String serviceProvider,
                                 String credentials, String token, String userId, OnResultListener<AuthData> listener) {
 
@@ -197,9 +264,9 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     callbackObject.result = true;
-                }else{
+                } else {
                     callbackObject.result = false;
                 }
 //                AuthData data = gson.fromJson(response.body().string(), AuthData.class);
@@ -251,8 +318,8 @@ public class NetworkManager {
 //
         RequestBody body = new FormBody.Builder()
                 .add("id", String.valueOf(id))
-                .add("first_name",firstName)
-                .add("last_name",lastName)
+                .add("first_name", firstName)
+                .add("last_name", lastName)
                 .build();
 
 
@@ -260,7 +327,7 @@ public class NetworkManager {
         Request request = new Request.Builder().url(url)
                 .tag(context)
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "bearer "+PropertyManager.getInstance().getPafarmToken())
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
                 .put(body)
                 .build();
 
@@ -279,6 +346,157 @@ public class NetworkManager {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
                 MyPersonalData data = gson.fromJson(response.body().string(), MyPersonalData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    public Request deleteUserInfo(Context context, OnResultListener<Boolean> listener) {
+
+        String url = STAGE_BASE_URL + "/me/";
+
+        final CallbackObject<Boolean> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .delete()
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                boolean isSuccess = false;
+                if (response.code() == 204) {
+                    isSuccess = true;
+                } else {
+                    isSuccess = false;
+                }
+                callbackObject.result = isSuccess;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    public Request getProfilImage(Context context, OnResultListener<MyPersonalData> listener) {
+
+        String url = STAGE_BASE_URL + "/users/" + PropertyManager.getInstance().getUserId() + "/profile.jpg";
+
+        final CallbackObject<MyPersonalData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                MyPersonalData data = gson.fromJson(response.body().string(), MyPersonalData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
+    public Request setMyProfileImage(Context context, File file, long profileId, final OnResultListener<MyProfile> listener) {
+
+        String url = STAGE_BASE_URL + "/profiles" + "/" + profileId + "/";
+
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file))
+                .build();
+
+        final CallbackObject<MyProfile> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .put(body)
+                .tag(context)
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                MyProfile data = gson.fromJson(response.body().string(), MyProfile.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+
+    public Request getProductList(Context context, OnResultListener<MyPersonalData> listener) {
+
+        String url = STAGE_BASE_URL + "/products-of-friends/?page=%d";
+        url = String.format(url,1);
+
+        final CallbackObject<MyPersonalData> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                String text = response.body().string();
+                MyPersonalData data = gson.fromJson(text, MyPersonalData.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);

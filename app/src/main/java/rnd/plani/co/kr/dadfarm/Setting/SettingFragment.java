@@ -4,11 +4,15 @@ package rnd.plani.co.kr.dadfarm.Setting;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.digits.sdk.android.Digits;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
+import rnd.plani.co.kr.dadfarm.Data.MyProfile;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
@@ -52,6 +62,7 @@ public class SettingFragment extends Fragment {
     TextView syncDateView, phoneView;
     EditText firstNameView, lastNameView;
     private static final int REQUEST_PICK_PICTURE = 100;
+    private static final int REQUEST_IMAGE_CROP = 200;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,8 +70,8 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            view.setPadding(0, Utils.getStatusBarHeight(),0,0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
         }
         firstNameView = (EditText) view.findViewById(R.id.edit_first_name);
         lastNameView = (EditText) view.findViewById(R.id.edit_last_name);
@@ -82,7 +93,6 @@ public class SettingFragment extends Fragment {
                     public void onSuccess(Request request, MyPersonalData result) {
                         Toast.makeText(getContext(), result.first_name + result.last_name, Toast.LENGTH_SHORT).show();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//                        syncDateView.setText(sdf.format(new Date()) + "동기화 됨");
                         syncDateView.setText(String.format(getString(R.string.sync_complete_message), sdf.format(new Date())));
                         syncView.clearAnimation();
                     }
@@ -108,7 +118,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                AlertDialog dialog =builder.setTitle(R.string.logout_title)
+                AlertDialog dialog = builder.setTitle(R.string.logout_title)
                         .setMessage(R.string.logout_message)
                         .setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
@@ -116,29 +126,30 @@ public class SettingFragment extends Fragment {
 
                             }
                         }).setNegativeButton(R.string.logout_btn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NetworkManager.getInstance().revokeToken(getContext(), PropertyManager.getInstance().getPafarmToken(), new NetworkManager.OnResultListener<Boolean>() {
                             @Override
-                            public void onSuccess(Request request, Boolean result) {
-                                if (result != null) {
-                                    if (result) {
-                                        PropertyManager.getInstance().setPafarmToken("");
-                                        startActivity(new Intent(getContext(), SplashActivity.class));
-                                        getActivity().finish();
-                                    } else {
+                            public void onClick(DialogInterface dialog, int which) {
+                                NetworkManager.getInstance().revokeToken(getContext(), PropertyManager.getInstance().getPafarmToken(), new NetworkManager.OnResultListener<Boolean>() {
+                                    @Override
+                                    public void onSuccess(Request request, Boolean result) {
+                                        if (result != null) {
+                                            if (result) {
+                                                Digits.clearActiveSession();
+                                                PropertyManager.getInstance().setPafarmToken("");
+                                                startActivity(new Intent(getContext(), SplashActivity.class));
+                                                getActivity().finish();
+                                            } else {
+
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Request request, int code, Throwable cause) {
 
                                     }
-                                }
+                                });
                             }
-
-                            @Override
-                            public void onFailure(Request request, int code, Throwable cause) {
-
-                            }
-                        });
-                    }
-                }).setCancelable(false).create();
+                        }).setCancelable(false).create();
                 dialog.show();
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue_gray));
                 dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red_gray));
@@ -162,7 +173,25 @@ public class SettingFragment extends Fragment {
                         .setNegativeButton(R.string.delete_account_btn, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                NetworkManager.getInstance().deleteUserInfo(getContext(), new NetworkManager.OnResultListener<Boolean>() {
+                                    @Override
+                                    public void onSuccess(Request request, Boolean result) {
+                                        if (result) {
+                                            Log.e("SettingFragment", "success");
+                                            Digits.clearActiveSession();
+                                            PropertyManager.getInstance().setPafarmToken("");
+                                            startActivity(new Intent(getContext(), SplashActivity.class));
+                                            getActivity().finish();
+                                        } else {
+                                            Log.e("SettingFragment", "fail");
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onFailure(Request request, int code, Throwable cause) {
+
+                                    }
+                                });
                             }
                         }).setCancelable(false).create();
                 dialog.show();
@@ -174,7 +203,9 @@ public class SettingFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),PolicyActivity.class));
+                Intent i = new Intent(getContext(), PolicyActivity.class);
+                i.putExtra(PolicyActivity.CONTENT_TYPE,PolicyActivity.TYPE_TERMS);
+                startActivity(i);
             }
         });
 
@@ -182,13 +213,43 @@ public class SettingFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),PolicyActivity.class));
+                Intent i = new Intent(getContext(), PolicyActivity.class);
+                i.putExtra(PolicyActivity.CONTENT_TYPE,PolicyActivity.TYPE_PRIVACY);
+                startActivity(i);
             }
         });
         initData();
         return view;
     }
 
+    public Bitmap resizeBitmapImage(
+            Bitmap bmpSource, int maxResolution) {
+        int iWidth = bmpSource.getWidth();      //비트맵이미지의 넓이
+        int iHeight = bmpSource.getHeight();     //비트맵이미지의 높이
+        int newWidth = iWidth;
+        int newHeight = iHeight;
+        float rate = 0.0f;
+
+        //이미지의 가로 세로 비율에 맞게 조절
+        if (iWidth > iHeight) {
+            if (maxResolution < iWidth) {
+                rate = maxResolution / (float) iWidth;
+                newHeight = (int) (iHeight * rate);
+                newWidth = maxResolution;
+            }
+        } else {
+            if (maxResolution < iHeight) {
+                rate = maxResolution / (float) iHeight;
+                newWidth = (int) (iWidth * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(
+                bmpSource, newWidth, newHeight, true);
+    }
+
+    long uid;
 
     private void initData() {
         NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<MyPersonalData>() {
@@ -196,9 +257,11 @@ public class SettingFragment extends Fragment {
             public void onSuccess(Request request, MyPersonalData result) {
                 if (result != null) {
                     personalData = result;
+                    uid = result.id;
                     firstNameView.setText(result.first_name);
                     lastNameView.setText(result.last_name);
                     phoneView.setText(result.profile.phone_number);
+                    Glide.with(getContext()).load(result.profile.image_url).into(profileView);
                 }
             }
 
@@ -217,10 +280,53 @@ public class SettingFragment extends Fragment {
             case REQUEST_PICK_PICTURE:
                 if (resultCode != Activity.RESULT_CANCELED) {
                     List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
-                    Glide.with(this).load(photos.get(0)).into(profileView);
+                    String path = photos.get(0);
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    Bitmap bmp = resizeBitmapImage(BitmapFactory.decodeFile(path, bmOptions), 256);
+                    File file = bmpToFile(bmp);
+                    NetworkManager.getInstance().setMyProfileImage(getContext(), file,
+                            uid, new NetworkManager.OnResultListener<MyProfile>() {
+                                @Override
+                                public void onSuccess(Request request, MyProfile result) {
+                                    if (result != null) {
+                                        Log.e("SettingFragment", result.image_url);
+                                        Glide.with(getContext()).load(result.image_url).into(profileView);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Request request, int code, Throwable cause) {
+
+                                }
+                            });
+//                    Glide.with(this).load(file).into(profileView);
+
                 }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private static final String FILE_NAME = "image.png";
+
+    private File bmpToFile(Bitmap bmp) {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "pafarm");
+        File saveFile = new File(dir, FILE_NAME);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(saveFile);
+            if (bmp != null) {
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                bmp.recycle();
+            }
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return saveFile;
     }
 }

@@ -68,8 +68,25 @@ public class PropertyManager {
         mEditor.putString(REG_SYNC_DATE, date);
         mEditor.commit();
     }
+    private static final String REG_USER_ID = "uid";
+    public long getUserId(){
+        return mPref.getLong(REG_USER_ID,-1);
+    }
 
+    public void setUserId(long uid){
+        mEditor.putLong(REG_USER_ID,uid);
+        mEditor.commit();
+    }
     public String getSyncDate(){
         return mPref.getString(REG_SYNC_DATE,"");
+    }
+
+    private static final String REG_GCM_TOKEN = "registration_token";
+    public String getRegistrationToken(){
+        return mPref.getString(REG_GCM_TOKEN,"");
+    }
+    public void setRegistrationToken(String token){
+        mEditor.putString(REG_GCM_TOKEN, token);
+        mEditor.commit();
     }
 }
