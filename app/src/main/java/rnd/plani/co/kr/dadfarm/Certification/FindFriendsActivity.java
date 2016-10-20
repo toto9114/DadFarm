@@ -21,20 +21,35 @@ import com.digits.sdk.android.models.DigitsUser;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.IntroToolbar;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
 import rnd.plani.co.kr.dadfarm.Main.MainActivity;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
+import rnd.plani.co.kr.dadfarm.Setting.TermsOrPrivacyService;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
     TextView statusView;
     Handler mHandler = new Handler(Looper.getMainLooper());
+
+    Retrofit retrofit;
+    TermsOrPrivacyService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +73,107 @@ public class FindFriendsActivity extends AppCompatActivity {
                 Digits.findFriends(new ContactsCallback<Contacts>() {
                     @Override
                     public void success(Result<Contacts> result) {
-                        List<DigitsUser> users = result.data.users;
-                        statusView.setText(getContactCount() + "개의 연락처에서\n" + users.size()
-                                + "명의 아빠농장 친구를 찾았습니다.");
-                        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
-                        mHandler.postDelayed(new Runnable() {
+                        final List<DigitsUser> users = result.data.users;
+//                        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//                        httpClient.addInterceptor(new Interceptor() {
+//                            @Override
+//                            public okhttp3.Response intercept(Chain chain) throws IOException {
+//                                Request original = chain.request();
+//
+//                                Request request = original.newBuilder()
+//                                        .addHeader("Content-Type", "application/json")
+//                                        .addHeader("Authorization", "bearer " + PropertyManager.getInstance().getPafarmToken())
+//                                        .method(original.method(), original.body())
+//                                        .build();
+//
+//                                return chain.proceed(request);
+//                            }
+//                        });
+//
+//                        OkHttpClient client =httpClient.build();
+
+                        retrofit = new Retrofit.Builder()
+                                .baseUrl("http://restapi-stage.pafarm.kr:9100/api/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        service = retrofit.create(TermsOrPrivacyService.class);
+                        ArrayList<String> friends = new ArrayList<String>();
+                        JSONObject jsonObject = new JSONObject();
+                        JSONArray jsonArray = new JSONArray();
+                        FriendsData data = new FriendsData();
+                        List<String> list  = new ArrayList<String>();;
+                        for (int i = 0; i < users.size(); i++) {
+//                            friends.add(users.get(i).idStr);
+//                            jsonArray.put(users.get(i).idStr);
+                            list.add(users.get(i).idStr);
+                        }
+                        data.friends = list;
+                        try {
+                            jsonObject.put("friends", jsonArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Call<ResponseBody> isSuccess = service.uploadFriends("Bearer " + PropertyManager.getInstance().getPafarmToken(), data);
+
+                        isSuccess.enqueue(new Callback<ResponseBody>() {
                             @Override
-                            public void run() {
-                                Intent i = new Intent(FindFriendsActivity.this, MainActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(i);
-                                finish();
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                int code = response.code();
+                                Log.e("FindFriends", "" + code);
+                                if(code == 200){
+                                    statusView.setText(getContactCount() + "개의 연락처에서\n" + users.size()
+                                            + "명의 아빠농장 친구를 찾았습니다.");
+                                    SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                    PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent i = new Intent(FindFriendsActivity.this, MainActivity.class);
+                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    }, 1000);
+                                }else{
+                                    Log.e("FindFriends","fail");
+                                }
                             }
-                        }, 1000);
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                            }
+                        });
+
+//                        NetworkManager.getInstance().uploadFriends(FindFriendsActivity.this, users, new NetworkManager.OnResultListener<Boolean>() {
+//                            @Override
+//                            public void onSuccess(Request request, Boolean result) {
+//                                if(result){
+//                                    Log.e("FindFriends","success");
+//                                    statusView.setText(getContactCount() + "개의 연락처에서\n" + users.size()
+//                                            + "명의 아빠농장 친구를 찾았습니다.");
+//                                    SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//                                    PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
+//                                    mHandler.postDelayed(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Intent i = new Intent(FindFriendsActivity.this, MainActivity.class);
+//                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                            startActivity(i);
+//                                            finish();
+//                                        }
+//                                    }, 1000);
+//                                }else{
+//                                    Log.e("FindFriends","fail");
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Request request, int code, Throwable cause) {
+//
+//                            }
+//                        });
                     }
 
                     @Override

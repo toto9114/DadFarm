@@ -98,7 +98,7 @@ public class RegistProductFragment extends Fragment {
     private void initData() {
         ProductData data = new ProductData();
         data.title = "맛있는 물회";
-        data.productName = "물회 한그릇";
+        data.name = "물회 한그릇";
         data.price = "10,000원";
         mAdapter.add(data);
         mAdapter.add(data);

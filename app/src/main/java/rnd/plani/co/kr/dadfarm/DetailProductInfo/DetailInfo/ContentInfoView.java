@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -20,11 +23,20 @@ public class ContentInfoView extends RecyclerView.ViewHolder {
     public ContentInfoView(View itemView) {
         super(itemView);
         nameView = (TextView) itemView.findViewById(R.id.text_name);
+        dateView = (TextView) itemView.findViewById(R.id.text_date);
         contentView = (TextView) itemView.findViewById(R.id.text_content);
+
     }
 
-    public void setContentView(ProductData data){
-        nameView.setText(data.sellerName);
-        contentView.setText(data.content);
+    public void setContentView(ProductData data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        nameView.setText(data.manager.last_name + data.manager.first_name);
+        try {
+            dateView.setText(sdf.format(sdf.parse(data.updated_time)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        contentView.setText(data.description);
     }
 }

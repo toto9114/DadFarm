@@ -39,11 +39,10 @@
             app:civ_border_width="2dp" />
 
         <TextView
-            android:id="@+id/text_name"
+            android:id="@+id/text_seller_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="백승빈의 삼촌"
             android:textColor="#fff"
             android:textStyle="bold"
             android:layout_marginTop="8dp"

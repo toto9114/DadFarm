@@ -37,7 +37,7 @@ public class SimpleProductView extends RecyclerView.ViewHolder {
     public void setProductItem(ProductData data){
         NumberFormat nf = NumberFormat.getInstance();
         titleView.setText(data.title);
-        productUnitView.setText(data.productName);
+        productUnitView.setText(data.name);
         dateView.setText(data.price);
     }
 }

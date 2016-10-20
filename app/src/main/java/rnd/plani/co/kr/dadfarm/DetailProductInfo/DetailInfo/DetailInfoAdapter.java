@@ -82,7 +82,7 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
                 ((RelationListView) holder).setOnProfileClickListener(this);
                 break;
             case VIEW_TYPE_IMAGE:
-                ((ImageListView) holder).setImageList();
+                ((ImageListView) holder).setImageList(data.images);
                 break;
             case VIEW_TYPE_CONTENT:
                 ((ContentInfoView) holder).setContentView(data);

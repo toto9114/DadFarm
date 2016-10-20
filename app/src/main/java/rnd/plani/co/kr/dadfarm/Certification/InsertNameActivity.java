@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.IntroToolbar;
-import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
@@ -38,9 +38,9 @@ public class InsertNameActivity extends AppCompatActivity {
                 String lastName = lastNameView.getText().toString();
                 if (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)) {
                     if (uid != -1) {
-                        NetworkManager.getInstance().updateUserInfo(InsertNameActivity.this, uid, firstName, lastName, new NetworkManager.OnResultListener<MyPersonalData>() {
+                        NetworkManager.getInstance().updateUserInfo(InsertNameActivity.this, uid, firstName, lastName, new NetworkManager.OnResultListener<PersonalData>() {
                             @Override
-                            public void onSuccess(Request request, MyPersonalData result) {
+                            public void onSuccess(Request request, PersonalData result) {
                                 if(result != null){
                                     startActivity(new Intent(InsertNameActivity.this, FindFriendsActivity.class));
                                 }
@@ -62,9 +62,9 @@ public class InsertNameActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<MyPersonalData>() {
+        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
             @Override
-            public void onSuccess(Request request, MyPersonalData result) {
+            public void onSuccess(Request request, PersonalData result) {
                 if (result != null) {
                     uid = result.id;
                     PropertyManager.getInstance().setUserId(uid);

@@ -37,8 +37,8 @@ import java.util.Date;
 import java.util.List;
 
 import okhttp3.Request;
-import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
-import rnd.plani.co.kr.dadfarm.Data.MyProfile;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
+import rnd.plani.co.kr.dadfarm.Data.ProfileData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
@@ -56,7 +56,7 @@ public class SettingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    MyPersonalData personalData;
+    PersonalData personalData;
     ImageView profileView;
     ImageView syncView;
     TextView syncDateView, phoneView;
@@ -88,9 +88,9 @@ public class SettingFragment extends Fragment {
                 syncDateView.setText("동기화 중..");
                 String firstName = firstNameView.getText().toString();
                 String lastName = lastNameView.getText().toString();
-                NetworkManager.getInstance().updateUserInfo(getContext(), personalData.id, firstName, lastName, new NetworkManager.OnResultListener<MyPersonalData>() {
+                NetworkManager.getInstance().updateUserInfo(getContext(), personalData.id, firstName, lastName, new NetworkManager.OnResultListener<PersonalData>() {
                     @Override
-                    public void onSuccess(Request request, MyPersonalData result) {
+                    public void onSuccess(Request request, PersonalData result) {
                         Toast.makeText(getContext(), result.first_name + result.last_name, Toast.LENGTH_SHORT).show();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         syncDateView.setText(String.format(getString(R.string.sync_complete_message), sdf.format(new Date())));
@@ -203,8 +203,8 @@ public class SettingFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PolicyActivity.class);
-                i.putExtra(PolicyActivity.CONTENT_TYPE,PolicyActivity.TYPE_TERMS);
+                Intent i = new Intent(getContext(), TermsOrPrivacyActivity.class);
+                i.putExtra(TermsOrPrivacyActivity.CONTENT_TYPE, TermsOrPrivacyActivity.TYPE_TERMS);
                 startActivity(i);
             }
         });
@@ -213,8 +213,8 @@ public class SettingFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PolicyActivity.class);
-                i.putExtra(PolicyActivity.CONTENT_TYPE,PolicyActivity.TYPE_PRIVACY);
+                Intent i = new Intent(getContext(), TermsOrPrivacyActivity.class);
+                i.putExtra(TermsOrPrivacyActivity.CONTENT_TYPE, TermsOrPrivacyActivity.TYPE_PRIVACY);
                 startActivity(i);
             }
         });
@@ -252,9 +252,9 @@ public class SettingFragment extends Fragment {
     long uid;
 
     private void initData() {
-        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<MyPersonalData>() {
+        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
             @Override
-            public void onSuccess(Request request, MyPersonalData result) {
+            public void onSuccess(Request request, PersonalData result) {
                 if (result != null) {
                     personalData = result;
                     uid = result.id;
@@ -285,9 +285,9 @@ public class SettingFragment extends Fragment {
                     Bitmap bmp = resizeBitmapImage(BitmapFactory.decodeFile(path, bmOptions), 256);
                     File file = bmpToFile(bmp);
                     NetworkManager.getInstance().setMyProfileImage(getContext(), file,
-                            uid, new NetworkManager.OnResultListener<MyProfile>() {
+                            uid, new NetworkManager.OnResultListener<ProfileData>() {
                                 @Override
-                                public void onSuccess(Request request, MyProfile result) {
+                                public void onSuccess(Request request, ProfileData result) {
                                     if (result != null) {
                                         Log.e("SettingFragment", result.image_url);
                                         Glide.with(getContext()).load(result.image_url).into(profileView);

@@ -44,7 +44,7 @@ import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.Certification.FindFriendsActivity;
 import rnd.plani.co.kr.dadfarm.Certification.InsertNameActivity;
 import rnd.plani.co.kr.dadfarm.Data.AuthData;
-import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.GCM.RegistrationIntentService;
 import rnd.plani.co.kr.dadfarm.Main.MainActivity;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
@@ -174,17 +174,13 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-//        AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
-//                .withAuthCallBack(authCallback)
-//                .withPhoneNumber("+82");
-//        Digits.authenticate(authConfigBuilder.build());
-//        digitsButton.setCallback(authCallback);
+
     }
 
     public void isExistNmae(){
-        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<MyPersonalData>() {
+        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
             @Override
-            public void onSuccess(Request request, MyPersonalData result) {
+            public void onSuccess(Request request, PersonalData result) {
                 if(result!=null){
                     if(TextUtils.isEmpty(result.first_name) && TextUtils.isEmpty(result.last_name)){
                         startActivity(new Intent(SplashActivity.this, InsertNameActivity.class));

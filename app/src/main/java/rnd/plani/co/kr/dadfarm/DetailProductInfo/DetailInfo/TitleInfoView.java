@@ -23,7 +23,7 @@ public class TitleInfoView extends RecyclerView.ViewHolder {
 
     public void setTitleView(ProductData data){
         titleView.setText(data.title);
-        productView.setText(data.productName);
+        productView.setText(data.name);
         priceView.setText(data.price);
         addressView.setText(data.address);
     }

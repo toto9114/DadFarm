@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -17,12 +17,12 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 
 public class HorizontalRelationAdapter extends RecyclerView.Adapter implements OnProfileClickListener{
-    List<RelationData> items = new ArrayList<>();
+    List<PersonalData> items = new ArrayList<>();
 
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_RELATION = 1;
 
-    public void add(RelationData data){
+    public void add(PersonalData data){
         items.add(data);
         notifyDataSetChanged();
     }
@@ -53,11 +53,11 @@ public class HorizontalRelationAdapter extends RecyclerView.Adapter implements O
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)){
             case VIEW_TYPE_PERSON:
-                ((PersonHorizontalView)holder).setProfile();
+                ((PersonHorizontalView)holder).setProfile(items.get(position));
                 ((PersonHorizontalView)holder).setOnProfileClickListener(this);
                 break;
             case VIEW_TYPE_RELATION:
-                ((HorizontalRelationDivider)holder).setRelation(items.get(position).relation);
+                ((HorizontalRelationDivider)holder).setRelation(String.valueOf(items.get(position).profile.id));
                 break;
         }
     }

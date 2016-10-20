@@ -16,7 +16,8 @@ import com.baoyz.widget.PullRefreshLayout;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 import okhttp3.Request;
-import rnd.plani.co.kr.dadfarm.Data.MyPersonalData;
+import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import rnd.plani.co.kr.dadfarm.Data.ProductListResultData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailProductActivity;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.RelationInfoActivity;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
@@ -80,10 +81,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getProductList(getContext(), new NetworkManager.OnResultListener<MyPersonalData>() {
+        NetworkManager.getInstance().getProductList(getContext(), new NetworkManager.OnResultListener<ProductListResultData>() {
             @Override
-            public void onSuccess(Request request, MyPersonalData result) {
-
+            public void onSuccess(Request request, ProductListResultData result) {
+                if(result != null){
+                    for(ProductData data : result.results) {
+                        mAdapter.add(data);
+                    }
+                }
             }
 
             @Override

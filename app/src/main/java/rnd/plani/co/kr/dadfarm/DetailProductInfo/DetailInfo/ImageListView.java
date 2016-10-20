@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.List;
+
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -13,15 +15,16 @@ import rnd.plani.co.kr.dadfarm.R;
 public class ImageListView extends RecyclerView.ViewHolder {
 
     LinearLayout imageListView;
+
     public ImageListView(View itemView) {
         super(itemView);
         imageListView = (LinearLayout) itemView.findViewById(R.id.linear_image_list);
     }
 
-    public void setImageList(){
-        for(int i = 0 ; i < 3 ; i ++) {
+    public void setImageList(List<String> images) {
+        for (String url : images) {
             ProductImageView imageView = new ProductImageView(itemView.getContext());
-            imageView.setImage(R.drawable.test_bg);
+            imageView.setImage(url);
             imageListView.addView(imageView);
         }
     }

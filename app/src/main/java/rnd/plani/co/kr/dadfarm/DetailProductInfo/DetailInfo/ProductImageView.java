@@ -19,8 +19,8 @@ public class ProductImageView extends FrameLayout {
         inflate(getContext(),R.layout.view_product_image,this);
         pictureView = (ImageView) findViewById(R.id.image_picture);
     }
-    public void setImage(int resId){
-            pictureView.setImageResource(resId);
+    public void setImage(String imageUrl){
+        Glide.with(getContext()).load(imageUrl).into(pictureView);
     }
     public void setImageFromUri(String uri){
         Glide.with(getContext()).load(uri).into(pictureView);

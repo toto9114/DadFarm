@@ -17,6 +17,8 @@ public class HorizontalRelationDivider extends RecyclerView.ViewHolder {
         relationView = (TextView) itemView.findViewById(R.id.text_relation);
     }
     public void setRelation(String relation){
-        relationView.setText(relation);
+        if(relation !=null) {
+            relationView.setText(relation);
+        }
     }
 }
