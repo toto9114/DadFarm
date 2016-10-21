@@ -17,7 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
-import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import okhttp3.Request;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
+import rnd.plani.co.kr.dadfarm.Data.ProductListResultData;
+import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
 
@@ -47,7 +50,7 @@ public class RegistProductFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_regist_product, container, false);
         titleLabelView = (FrameLayout) view.findViewById(R.id.title_label);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             titleLabelView.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
         }
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
@@ -69,7 +72,7 @@ public class RegistProductFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(refreshLayout.isRefreshing()){
+                if (refreshLayout.isRefreshing()) {
                     refreshLayout.setRefreshing(false);
                 }
             }
@@ -77,8 +80,9 @@ public class RegistProductFragment extends Fragment {
         recyclerView.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(FamiliarRecyclerView familiarRecyclerView, View view, int position) {
-                Intent i = new Intent(getContext(),RegistProductInfoActivity.class);
-                i.putExtra(RegistProductInfoActivity.EDIT_TYPE,RegistProductInfoActivity.TYPE_EDIT_PRODUCT);
+                Intent i = new Intent(getContext(), RegistProductInfoActivity.class);
+                i.putExtra(RegistProductInfoActivity.EXTRA_PRODUCT_DATA, mAdapter.getItem(position));
+                i.putExtra(RegistProductInfoActivity.EDIT_TYPE, RegistProductInfoActivity.TYPE_EDIT_PRODUCT);
                 startActivity(i);
             }
         });
@@ -87,7 +91,7 @@ public class RegistProductFragment extends Fragment {
             @Override
             public void OnHeaderViewClick() {
                 Intent i = new Intent(getContext(), RegistProductInfoActivity.class);
-                i.putExtra(RegistProductInfoActivity.EDIT_TYPE,RegistProductInfoActivity.TYPE_ADD_PRODUCT);
+                i.putExtra(RegistProductInfoActivity.EDIT_TYPE, RegistProductInfoActivity.TYPE_ADD_PRODUCT);
                 startActivity(i);
             }
         });
@@ -96,22 +100,38 @@ public class RegistProductFragment extends Fragment {
     }
 
     private void initData() {
-        ProductData data = new ProductData();
-        data.title = "맛있는 물회";
-        data.name = "물회 한그릇";
-        data.price = "10,000원";
-        mAdapter.add(data);
-        mAdapter.add(data);
-        mAdapter.add(data);
-        mAdapter.add(data);
-        mAdapter.add(data);
-        if (mAdapter.getItemCount() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }else{
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
-        titleView.setText(mAdapter.getItemCount() - AddedProductAdapter.HEADER_SIZE + "개의 상품을 중계하고 있습니다");
+        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
+            @Override
+            public void onSuccess(Request request, PersonalData result) {
+
+                NetworkManager.getInstance().getProduct(getContext(), result.id, new NetworkManager.OnResultListener<ProductListResultData>() {
+                    @Override
+                    public void onSuccess(Request request, ProductListResultData result) {
+                        if (result != null) {
+                            mAdapter.addAll(result.results);
+                        }
+                        if (mAdapter.getItemCount() == AddedProductAdapter.HEADER_SIZE) {
+                            recyclerView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
+                        }
+                        titleView.setText(mAdapter.getItemCount() - AddedProductAdapter.HEADER_SIZE + "개의 상품을 중계하고 있습니다");
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import rnd.plani.co.kr.dadfarm.Data.ReviewData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OnRelationClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -51,6 +52,6 @@ public class ReviewItemView extends RecyclerView.ViewHolder {
         relationView.setText(data.relation);
         dateView.setText(data.date);
         contentView.setText(data.content);
-        productView.setText(data.product);
+        productView.setText(data.product_name);
     }
 }

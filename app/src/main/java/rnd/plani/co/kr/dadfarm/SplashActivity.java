@@ -65,8 +65,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.splash_color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.splash_color));
         }
 
         loginView = (LinearLayout) findViewById(R.id.linear_login);
@@ -177,14 +177,15 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void isExistNmae(){
+    public void isExistNmae() {
         NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
-                if(result!=null){
-                    if(TextUtils.isEmpty(result.first_name) && TextUtils.isEmpty(result.last_name)){
+                PropertyManager.getInstance().setUserId(result.id);
+                if (result != null) {
+                    if (TextUtils.isEmpty(result.first_name) && TextUtils.isEmpty(result.last_name)) {
                         startActivity(new Intent(SplashActivity.this, InsertNameActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(SplashActivity.this, FindFriendsActivity.class));
                     }
                 }
@@ -196,6 +197,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
@@ -207,6 +209,7 @@ public class SplashActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
     }
+
     private void setUpIfNeeded() {
         if (checkPlayServices()) {
             String regId = PropertyManager.getInstance().getRegistrationToken();
@@ -219,7 +222,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void doRealStart(){
+    private void doRealStart() {
         if (!TextUtils.isEmpty(PropertyManager.getInstance().getPafarmToken())) {
             loginView.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
@@ -228,11 +231,12 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }
-            },1000);
+            }, 1000);
         } else {
             loginView.setVisibility(View.VISIBLE);
         }
     }
+
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
@@ -254,6 +258,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         return true;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CONTACT_UPLOAD_REQUEST && resultCode != RESULT_CANCELED) {

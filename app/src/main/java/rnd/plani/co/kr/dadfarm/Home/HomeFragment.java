@@ -16,6 +16,7 @@ import com.baoyz.widget.PullRefreshLayout;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 import okhttp3.Request;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.Data.ProductListResultData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailProductActivity;
@@ -71,8 +72,9 @@ public class HomeFragment extends Fragment {
         });
         mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
-            public void OnProfileClick() {
+            public void OnProfileClick(PersonalData personalData) {
                 Intent i = new Intent(getContext(), RelationInfoActivity.class);
+                i.putExtra(RelationInfoActivity.EXTRA_PERSONAL_DATA,personalData);
                 startActivity(i);
             }
         });

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
@@ -66,9 +67,9 @@ public class ProductAdapter extends RecyclerView.Adapter implements OnItemClickL
     }
 
     @Override
-    public void OnProfileClick() {
+    public void OnProfileClick(PersonalData personalData) {
         if(profileClickListener != null){
-            profileClickListener.OnProfileClick();
+            profileClickListener.OnProfileClick(personalData);
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import rnd.plani.co.kr.dadfarm.Data.ReviewData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OnRelationClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -20,6 +21,10 @@ public class ReviewAdapter extends RecyclerView.Adapter implements OnRelationCli
     public void add(ReviewData data){
         items.add(data);
         notifyDataSetChanged();
+    }
+    public void addAll(List<ReviewData> list){
+        items.addAll(list);
+
     }
     public void clear(){
         items.clear();

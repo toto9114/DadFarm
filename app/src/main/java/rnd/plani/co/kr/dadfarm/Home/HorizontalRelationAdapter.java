@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
+import rnd.plani.co.kr.dadfarm.Data.Relationships;
+import rnd.plani.co.kr.dadfarm.Data.RelationshipsData;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -17,18 +19,18 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 
 public class HorizontalRelationAdapter extends RecyclerView.Adapter implements OnProfileClickListener{
-    List<PersonalData> items = new ArrayList<>();
+    List<Relationships> items = new ArrayList<>();
 
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_RELATION = 1;
 
-    public void add(PersonalData data){
+    public void add(Relationships data){
         items.add(data);
         notifyDataSetChanged();
     }
     @Override
     public int getItemViewType(int position) {
-        if(position%2 ==0){
+        if(items.get(position) instanceof PersonalData){
             return VIEW_TYPE_PERSON;
         }else{
             return VIEW_TYPE_RELATION;
@@ -53,11 +55,11 @@ public class HorizontalRelationAdapter extends RecyclerView.Adapter implements O
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)){
             case VIEW_TYPE_PERSON:
-                ((PersonHorizontalView)holder).setProfile(items.get(position));
+                ((PersonHorizontalView)holder).setProfile((PersonalData) items.get(position));
                 ((PersonHorizontalView)holder).setOnProfileClickListener(this);
                 break;
             case VIEW_TYPE_RELATION:
-                ((HorizontalRelationDivider)holder).setRelation(String.valueOf(items.get(position).profile.id));
+                ((HorizontalRelationDivider)holder).setRelation((RelationshipsData)items.get(position));
                 break;
         }
     }
@@ -72,9 +74,9 @@ public class HorizontalRelationAdapter extends RecyclerView.Adapter implements O
         profileClickListener = listener;
     }
     @Override
-    public void OnProfileClick() {
+    public void OnProfileClick(PersonalData personalData) {
         if(profileClickListener != null){
-            profileClickListener.OnProfileClick();
+            profileClickListener.OnProfileClick(personalData);
         }
     }
 }

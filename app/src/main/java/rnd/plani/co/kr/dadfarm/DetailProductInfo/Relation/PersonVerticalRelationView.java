@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
@@ -69,14 +70,14 @@ public class PersonVerticalRelationView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if(profileClickListener != null){
-                    profileClickListener.OnProfileClick();
+                    profileClickListener.OnProfileClick(personalData);
                 }
             }
         });
     }
 
     RelationData relationData;
-
+    PersonalData personalData = null;
     public void setPersonView(RelationData data) {
         relationData = data;
         nameView.setText(data.name);

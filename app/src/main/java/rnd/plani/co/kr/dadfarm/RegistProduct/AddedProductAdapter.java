@@ -27,12 +27,19 @@ public class AddedProductAdapter extends RecyclerView.Adapter implements OnHeade
         items.add(data);
         notifyDataSetChanged();
     }
+    public void addAll(List<ProductData> list){
+        items.addAll(list);
+        notifyDataSetChanged();
+    }
 
     public void clear() {
         items.clear();
         notifyDataSetChanged();
     }
 
+    public ProductData getItem(int position){
+        return items.get(position-HEADER_SIZE);
+    }
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {

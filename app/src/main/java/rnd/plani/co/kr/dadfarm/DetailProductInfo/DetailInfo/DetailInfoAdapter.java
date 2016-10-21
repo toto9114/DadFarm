@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
@@ -157,9 +158,9 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
     }
 
     @Override
-    public void OnProfileClick() {
+    public void OnProfileClick(PersonalData personalData) {
         if (profileClickListener != null) {
-            profileClickListener.OnProfileClick();
+            profileClickListener.OnProfileClick(personalData);
         }
     }
 }

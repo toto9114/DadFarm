@@ -6,9 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.NumberFormat;
 
-import rnd.plani.co.kr.dadfarm.Data.OrderResultData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -29,15 +30,21 @@ public class SimpleProductView extends RecyclerView.ViewHolder {
         pictureView.setColorFilter(ContextCompat.getColor(itemView.getContext(),R.color.image_opacity));
     }
 
-    public void setOrderItem(OrderResultData data){
-        titleView.setText(data.productName);
-        productUnitView.setText(data.orderCount);
-        dateView.setText(data.orderDate);
+    public void setOrderItem(ProductData data){
+        titleView.setText(data.title);
+        productUnitView.setText(data.name);
+        dateView.setText(data.updated_time);
+        if(!data.images.isEmpty()) {
+            Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
+        }
     }
     public void setProductItem(ProductData data){
         NumberFormat nf = NumberFormat.getInstance();
         titleView.setText(data.title);
         productUnitView.setText(data.name);
         dateView.setText(data.price);
+        if(!data.images.isEmpty()) {
+            Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
+        }
     }
 }

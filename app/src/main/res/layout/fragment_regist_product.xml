@@ -33,7 +33,8 @@
             <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
             </cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>

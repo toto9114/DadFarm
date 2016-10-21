@@ -132,7 +132,7 @@
                         android:text="판매자는 나의" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/edit_has_relation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -157,7 +157,7 @@
                         android:text="나는 판매자의" />
 
                     <EditText
-                        android:id="@+id/editText3"
+                        android:id="@+id/edit_is_relation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -170,7 +170,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/editText5"
+                    android:id="@+id/edit_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_white_background_gray_stroke"
@@ -236,7 +236,8 @@
                     android:textSize="14sp"
                     android:ems="255"
                     android:gravity="top"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_content" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -245,7 +246,8 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="상품 생산지(주소)"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_address" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -254,7 +256,8 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="상품명 및 판매단위 예) 유기농 노란감자 10kg"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_product_name" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -263,7 +266,8 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="판매가격(원단위, 배송비 포함)"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_price" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -272,7 +276,8 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="입금은행 예) 농협, 국민은행, 우리은행 등"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_bank_name" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -281,7 +286,8 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="계좌번호 예) 111-2222-33-4444"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_bank_account" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -289,7 +295,15 @@
                     android:background="@drawable/bg_white_background_gray_stroke"
                     android:hint="예금주명 예)홍길동"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:id="@+id/edit_bank_account_holder" />
+
+                <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_delete"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

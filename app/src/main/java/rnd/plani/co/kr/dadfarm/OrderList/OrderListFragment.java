@@ -15,8 +15,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
-import rnd.plani.co.kr.dadfarm.Data.OrderResultData;
+import okhttp3.Request;
+import rnd.plani.co.kr.dadfarm.Data.OrderListResultData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OrderCompleteActivity;
+import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
 
@@ -59,7 +61,7 @@ public class OrderListFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(refreshLayout.isRefreshing()) {
+                if (refreshLayout.isRefreshing()) {
                     refreshLayout.setRefreshing(false);
                 }
             }
@@ -77,18 +79,27 @@ public class OrderListFragment extends Fragment {
     }
 
     private void initData() {
-        OrderResultData data = new OrderResultData();
-        data.productName = "신선한 유기농 청경채";
-        data.orderCount = "유기농 청경채 500g";
-        data.orderDate = "2016-10-08";
-        mAdapter.add(data);
-        if (mAdapter.getItemCount() != 0) {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        titleView.setText(String.format(getString(R.string.order_list_title), mAdapter.getItemCount()));
+        mAdapter.clear();
+        NetworkManager.getInstance().getOrderList(getContext(), new NetworkManager.OnResultListener<OrderListResultData>() {
+            @Override
+            public void onSuccess(Request request, OrderListResultData result) {
+                if (result != null) {
+                    mAdapter.addAll(result.results);
+                }
+                if (mAdapter.getItemCount() != 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }
+                titleView.setText(String.format(getString(R.string.order_list_title), mAdapter.getItemCount()));
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
     }
 }

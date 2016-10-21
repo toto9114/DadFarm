@@ -6,6 +6,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
+
 /**
  * Created by RND on 2016-09-27.
  */
@@ -24,7 +28,9 @@ public class PersonRelationView extends FrameLayout {
         phoneCallView = (ImageView) findViewById(R.id.image_phone_call);
     }
 
-    public void setRelationView(){
-
+    public void setRelationView(PersonalData personalData,String relation){
+        Glide.with(getContext()).load(personalData.profile.image_url).into(profileView);
+        nameView.setText(personalData.last_name+personalData.first_name);
+        relationView.setText(relation);
     }
 }

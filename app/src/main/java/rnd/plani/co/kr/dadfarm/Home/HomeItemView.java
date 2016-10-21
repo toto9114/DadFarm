@@ -12,11 +12,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wefika.flowlayout.FlowLayout;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import rnd.plani.co.kr.dadfarm.Data.RelationshipsData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
@@ -72,15 +74,15 @@ public class HomeItemView extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (profileClickListener != null) {
-                    profileClickListener.OnProfileClick();
+                    profileClickListener.OnProfileClick(productData.seller);
                 }
             }
         });
         mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
-            public void OnProfileClick() {
+            public void OnProfileClick(PersonalData personalData) {
                 if (profileClickListener != null) {
-                    profileClickListener.OnProfileClick();
+                    profileClickListener.OnProfileClick(personalData);
                 }
             }
         });
@@ -89,8 +91,10 @@ public class HomeItemView extends RecyclerView.ViewHolder {
         pictureView.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.image_opacity));
     }
 
+    ProductData productData = null;
 
     public void setData(final ProductData data) {
+        productData = data;
         titleView.setText(data.title);
         for (int i = 0; i < 5; i++) {
             TagBoxView tagBoxView = new TagBoxView(context);
@@ -114,26 +118,37 @@ public class HomeItemView extends RecyclerView.ViewHolder {
             mFlowlayout.addView(tagBoxView, FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
         }
         sellerNameView.setText(data.seller.last_name + data.seller.first_name);
-        Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
+        if(!data.images.isEmpty()) {
+            Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
+        }
         if (data.seller.profile.image_url != null) {
-            Glide.with(itemView.getContext()).load(data.seller.profile.image_url);
+            Glide.with(itemView.getContext()).load(data.seller.profile.image_url).into(profileView);
         }
         NetworkManager.getInstance().getUserInfo(itemView.getContext(), new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
-                long subject_id = result.profile.id;
-                long object_id = data.manager.profile.id;
-                String temp = subject_id + "-" + object_id;
-                mAdapter.add(result);
-                data.relationships.containsKey(temp);
-                mAdapter.add(data.seller);
-                Set<String> relation = data.relationships.keySet();
-                String[] key = relation.toArray(new String[relation.size()]);
-                for (int i = 0; i < key.length; i++) {
-
-//                    if(i <relation.size()-1){
-//                        mAdapter.add(null);
-//                    }
+                mAdapter.add(result);   //나 자신 추가
+                List<String> key = new ArrayList<String>();
+                List<String> val = new ArrayList<String>();
+                key.addAll(data.relationships.keySet());
+                for (int i = 0; i < key.size(); i++) {
+                    val.add(data.relationships.get(key.get(i)));
+                }
+                if (data.friend != null && !result.profile.phone_number.equals(data.friend.profile.phone_number)) { //친구가있다면
+                    addFriends(key, val, result, data);     //나와 친구 relation
+                    if (data.manager != null && !data.friend.profile.phone_number.equals(data.manager.profile.phone_number)) {
+                        addManager(key, val, data.friend, data); //친구와 중계자 사이
+                        if (data.seller != null && !data.manager.profile.phone_number.equals(data.seller.profile.phone_number)) {
+                            addSeller(key, val, data.manager, data);  //중계자와 판매자 relation
+                        }
+                    }
+                } else {
+                    if (data.manager != null && !result.profile.phone_number.equals(data.manager.profile.phone_number)) {
+                        addManager(key, val, result, data); //나와 중계자 relation
+                        if (data.seller != null && !data.manager.profile.phone_number.equals(data.seller.profile.phone_number)) {
+                            addSeller(key, val, data.manager, data);  //중계자와 판매자 relation
+                        }
+                    }
                 }
 
             }
@@ -144,6 +159,60 @@ public class HomeItemView extends RecyclerView.ViewHolder {
             }
         });
 
+    }
+
+    private void addFriends(List<String> key, List<String> val, PersonalData me, ProductData data) {
+        long subject_id = me.profile.id;
+        long object_id = data.friend.profile.id;
+        String temp = subject_id + "-" + object_id;
+
+        for (int i = 0; i < key.size(); i++) {
+            if (temp.equals(key.get(i))) {
+
+                RelationshipsData relationshipsData = new RelationshipsData();
+                relationshipsData.relationId = temp;
+                relationshipsData.relationName = val.get(i);
+                mAdapter.add(relationshipsData);
+                mAdapter.add(data.friend);
+                //manager relation 추가
+
+            }
+        }
+    }
+
+    private void addManager(List<String> key, List<String> val, PersonalData me, ProductData data) {
+        long subject_id = me.profile.id;
+        long object_id = data.manager.profile.id;
+        String temp = subject_id + "-" + object_id;
+
+
+        for (int i = 0; i < key.size(); i++) {
+            if (temp.equals(key.get(i))) {
+                RelationshipsData relationshipsData = new RelationshipsData();
+                relationshipsData.relationId = temp;
+                relationshipsData.relationName = val.get(i);
+                mAdapter.add(relationshipsData);
+                mAdapter.add(data.manager);
+                //manager relation 추가
+            }
+        }
+    }
+
+    private void addSeller(List<String> key, List<String> val, PersonalData me, ProductData data) {
+        long subject_id = me.profile.id;
+        long object_id = data.seller.profile.id;
+        String temp = subject_id + "-" + object_id;
+
+        for (int i = 0; i < key.size(); i++) {
+            if (temp.equals(key.get(i))) {
+                RelationshipsData relationshipsData = new RelationshipsData();
+                relationshipsData.relationId = temp;
+                relationshipsData.relationName = val.get(i);
+                mAdapter.add(relationshipsData);
+                mAdapter.add(data.seller);
+                //manager relation 추가
+            }
+        }
     }
 
 }

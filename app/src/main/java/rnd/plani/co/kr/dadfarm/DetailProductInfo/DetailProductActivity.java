@@ -23,6 +23,7 @@ import rnd.plani.co.kr.dadfarm.CustomDialog.CustomShareDialog;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeShareToolbar;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnRightMenuClickListener;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailInfo.DetailInfoAdapter;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.DetailInfo.OnOrderBtnClickListener;
@@ -95,7 +96,7 @@ public class DetailProductActivity extends AppCompatActivity {
         });
         mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
-            public void OnProfileClick() {
+            public void OnProfileClick(PersonalData personalData) {
                 Intent i = new Intent(DetailProductActivity.this, RelationInfoActivity.class);
                 startActivity(i);
             }
@@ -107,7 +108,9 @@ public class DetailProductActivity extends AppCompatActivity {
         reviewView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DetailProductActivity.this, ReviewProductActivity.class));
+                Intent i = new Intent(DetailProductActivity.this, ReviewProductActivity.class);
+                i.putExtra(ReviewProductActivity.EXTRA_PRODUCT_DATA,product);
+                startActivity(i);
             }
         });
 

@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeShareToolbar;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
@@ -84,7 +85,7 @@ public class OrderCompleteActivity extends AppCompatActivity {
         });
         mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
-            public void OnProfileClick() {
+            public void OnProfileClick(PersonalData personalData) {
                 Intent i = new Intent(OrderCompleteActivity.this, RelationInfoActivity.class);
                 startActivity(i);
             }

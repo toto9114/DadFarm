@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import rnd.plani.co.kr.dadfarm.Data.RelationshipsData;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -16,9 +17,9 @@ public class HorizontalRelationDivider extends RecyclerView.ViewHolder {
         super(itemView);
         relationView = (TextView) itemView.findViewById(R.id.text_relation);
     }
-    public void setRelation(String relation){
-        if(relation !=null) {
-            relationView.setText(relation);
+    public void setRelation(RelationshipsData data){
+        if(data !=null) {
+            relationView.setText(data.relationName);
         }
     }
 }

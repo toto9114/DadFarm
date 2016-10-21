@@ -34,14 +34,17 @@ public class PersonHorizontalView extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (profileClickListener != null) {
-                    profileClickListener.OnProfileClick();
+                    profileClickListener.OnProfileClick(data);
                 }
             }
         });
     }
 
+    PersonalData data = null;
+
     public void setProfile(PersonalData data) {
-        if(data !=null) {
+        this.data = data;
+        if (data != null) {
             if (!TextUtils.isEmpty(data.profile.image_url)) {
                 Glide.with(itemView.getContext()).load(data.profile.image_url).into(profileView);
                 nameView.setText(data.last_name + data.first_name);

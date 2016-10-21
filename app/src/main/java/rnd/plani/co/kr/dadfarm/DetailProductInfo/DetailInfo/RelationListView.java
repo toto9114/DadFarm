@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.RelationData;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
@@ -65,9 +66,9 @@ public class RelationListView extends RecyclerView.ViewHolder {
         });
         mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
-            public void OnProfileClick() {
+            public void OnProfileClick(PersonalData personalData) {
                 if (profileClickListener != null) {
-                    profileClickListener.OnProfileClick();
+                    profileClickListener.OnProfileClick(personalData);
                 }
             }
         });
