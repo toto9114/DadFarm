@@ -24,6 +24,15 @@ public class ProductAdapter extends RecyclerView.Adapter implements OnItemClickL
         notifyDataSetChanged();
     }
 
+    public void addAll(List<ProductData> list) {
+        items.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        items.clear();
+    }
+
     public ProductData getItem(int position) {
         return items.get(position);
     }
@@ -68,7 +77,7 @@ public class ProductAdapter extends RecyclerView.Adapter implements OnItemClickL
 
     @Override
     public void OnProfileClick(PersonalData personalData) {
-        if(profileClickListener != null){
+        if (profileClickListener != null) {
             profileClickListener.OnProfileClick(personalData);
         }
     }

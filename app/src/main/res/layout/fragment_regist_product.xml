@@ -16,14 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center"
-            android:text="0개의 상품을 중계하고 있습니다"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title_label">
+        android:layout_below="@+id/title_label"
+        android:visibility="gone"
+        android:id="@+id/container">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refresh"

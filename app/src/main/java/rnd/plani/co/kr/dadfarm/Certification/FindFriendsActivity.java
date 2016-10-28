@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,7 +42,8 @@ import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
 import rnd.plani.co.kr.dadfarm.Main.MainActivity;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
-import rnd.plani.co.kr.dadfarm.Setting.TermsOrPrivacyService;
+import rnd.plani.co.kr.dadfarm.Setting.NetworkService;
+import rnd.plani.co.kr.dadfarm.Utils;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
@@ -49,7 +51,7 @@ public class FindFriendsActivity extends AppCompatActivity {
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Retrofit retrofit;
-    TermsOrPrivacyService service;
+    NetworkService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class FindFriendsActivity extends AppCompatActivity {
         IntroToolbar toolbar = (IntroToolbar) findViewById(R.id.toolbar);
         statusView = (TextView) findViewById(R.id.text_status);
         toolbar.setToolbar("닫기", "친구찾기");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
+        }
         toolbar.setOnLeftMenuClickListener(new OnLeftMenuClickListener() {
             @Override
             public void OnLeftMenuClick() {
@@ -96,12 +101,13 @@ public class FindFriendsActivity extends AppCompatActivity {
                                 .baseUrl("http://restapi-stage.pafarm.kr:9100/api/")
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
-                        service = retrofit.create(TermsOrPrivacyService.class);
+                        service = retrofit.create(NetworkService.class);
                         ArrayList<String> friends = new ArrayList<String>();
                         JSONObject jsonObject = new JSONObject();
                         JSONArray jsonArray = new JSONArray();
                         FriendsData data = new FriendsData();
-                        List<String> list  = new ArrayList<String>();;
+                        List<String> list = new ArrayList<String>();
+                        ;
                         for (int i = 0; i < users.size(); i++) {
 //                            friends.add(users.get(i).idStr);
 //                            jsonArray.put(users.get(i).idStr);
@@ -121,10 +127,10 @@ public class FindFriendsActivity extends AppCompatActivity {
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 int code = response.code();
                                 Log.e("FindFriends", "" + code);
-                                if(code == 200){
+                                if (code == 200) {
                                     statusView.setText(getContactCount() + "개의 연락처에서\n" + users.size()
                                             + "명의 아빠농장 친구를 찾았습니다.");
-                                    SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                                     PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
@@ -135,8 +141,8 @@ public class FindFriendsActivity extends AppCompatActivity {
                                             finish();
                                         }
                                     }, 1000);
-                                }else{
-                                    Log.e("FindFriends","fail");
+                                } else {
+                                    Log.e("FindFriends", "fail");
                                 }
                             }
 

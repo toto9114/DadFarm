@@ -3,6 +3,9 @@ package rnd.plani.co.kr.dadfarm.Main;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 ImageView iconView = (ImageView) tab.getCustomView().findViewById(R.id.image_icon);
                 titleView.setTextColor(selectColor);
                 iconView.setColorFilter(selectColor, PorterDuff.Mode.SRC_IN);
-                Animation anim = AnimationUtils.loadAnimation(MainActivity.this,R.anim.rotate);
+                Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.rotate);
                 switch (tab.getPosition()) {
                     case 0:
                         YoYo.with(Techniques.RubberBand)
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     case 4:
                         iconView.startAnimation(anim);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SettingFragment(),"settings")
+                                .replace(R.id.container, new SettingFragment(), "settings")
                                 .commit();
                         break;
                 }
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setTabMenu() {
-        for(int i = 0 ; i < BottomTabMenu.MENU_SIZE ; i++){
+        for (int i = 0; i < BottomTabMenu.MENU_SIZE; i++) {
             BottomTabMenu v = new BottomTabMenu(this);
             v.setTabMenu(i);
             tabLayout.addTab(tabLayout.newTab().setCustomView(v));
@@ -152,6 +156,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Fragment f = getSupportFragmentManager().findFragmentByTag("settings");
-        f.onActivityResult(requestCode,resultCode,data);
+        f.onActivityResult(requestCode, resultCode, data);
+    }
+
+    boolean isBackPressed = false;
+    public static final int MESSAGE_BACK_KEY_TIMEOUT = 0;
+    public static final int BACK_KEY_TIME = 2000;
+    Handler mHandler = new Handler(Looper.myLooper(), new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_BACK_KEY_TIMEOUT:
+                    isBackPressed = false;
+                    return true;
+            }
+            return false;
+        }
+    });
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        if (!isBackPressed) {
+            Toast.makeText(this, R.string.back_pressed_message, Toast.LENGTH_SHORT).show();
+            isBackPressed = true;
+            mHandler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, BACK_KEY_TIME);
+        } else {
+            mHandler.removeMessages(MESSAGE_BACK_KEY_TIMEOUT);
+            finish();
+        }
+
     }
 }

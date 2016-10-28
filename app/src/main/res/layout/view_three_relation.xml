@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:text="할아버지"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/text_me_manager_relation" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:text="할아버지"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/text_manager_seller_relation" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <View
+            android:layout_width="151dp"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="17.5dp"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:id="@+id/linear_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal">
+
+            <RelativeLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/image_me"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="22.5dp"
+                    android:layout_marginRight="22.5dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_color="@android:color/white"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_me"
+                    android:text="asdfas"
+                    android:layout_centerHorizontal="true"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:id="@+id/text_my_name" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/image_manager"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="22.5dp"
+                    android:layout_marginRight="22.5dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_color="@android:color/white"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_manager"
+                    android:layout_centerHorizontal="true"
+                    android:text="asdfasdf"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:id="@+id/text_manager_name" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:id="@+id/frame_image_seller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22.5dp"
+                    android:layout_marginRight="22.5dp"
+                    android:layout_marginBottom="8dp">
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/image_seller"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_color="@android:color/white"
+                    app:civ_border_width="2dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:src="@drawable/ic_seller_badge_12"/>
+                </FrameLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/frame_image_seller"
+                    android:layout_centerHorizontal="true"
+                    android:text="asdfasdf"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:id="@+id/text_seller_name" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -5,11 +5,6 @@ package rnd.plani.co.kr.dadfarm.Data;
  */
 
 public class RelationData {
-    public String profileImage;
-
-    public String name;
-    public String role;
+    public PersonalData person;
     public String relation;
-    public String phone;
-
 }

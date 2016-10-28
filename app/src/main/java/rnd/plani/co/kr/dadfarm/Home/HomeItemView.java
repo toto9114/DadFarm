@@ -12,13 +12,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wefika.flowlayout.FlowLayout;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
-import rnd.plani.co.kr.dadfarm.Data.RelationshipsData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
@@ -49,6 +51,12 @@ public class HomeItemView extends RecyclerView.ViewHolder {
     LinearLayoutManager layoutManager;
     Context context;
 
+    OneRelationView oneRelationView;
+    TwoRelationView twoRelationView;
+    ThreeRelationView threeRelationView;
+    FourRelationView fourRelationView;
+    TagBoxView productNameTag, priceTag, addressTag, orderCountTag, updateDateTag;
+
     public HomeItemView(View itemView) {
         super(itemView);
         context = itemView.getContext();
@@ -56,12 +64,21 @@ public class HomeItemView extends RecyclerView.ViewHolder {
         pictureView = (ImageView) itemView.findViewById(R.id.image_picture);
         titleView = (TextView) itemView.findViewById(R.id.text_title);
         sellerNameView = (TextView) itemView.findViewById(R.id.text_seller_name);
-        mFlowlayout = (FlowLayout) itemView.findViewById(R.id.flowlayout);
-        recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler);
-        mAdapter = new HorizontalRelationAdapter();
+//        mFlowlayout = (FlowLayout) itemView.findViewById(R.id.flowlayout);
+
+        oneRelationView = (OneRelationView) itemView.findViewById(R.id.one_relation);
+        twoRelationView = (TwoRelationView) itemView.findViewById(R.id.two_relation);
+        threeRelationView = (ThreeRelationView) itemView.findViewById(R.id.three_relation);
+        fourRelationView = (FourRelationView) itemView.findViewById(R.id.four_relation);
+
+        productNameTag = (TagBoxView) itemView.findViewById(R.id.tag_product_name);
+        priceTag = (TagBoxView) itemView.findViewById(R.id.tag_price);
+        addressTag = (TagBoxView) itemView.findViewById(R.id.tag_address);
+        orderCountTag = (TagBoxView) itemView.findViewById(R.id.tag_order_count);
+        updateDateTag = (TagBoxView) itemView.findViewById(R.id.tag_update_date);
+
         layoutManager = new LinearLayoutManager(itemView.getContext(), OrientationHelper.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +95,8 @@ public class HomeItemView extends RecyclerView.ViewHolder {
                 }
             }
         });
-        mAdapter.setOnProfileClickListener(new OnProfileClickListener() {
+
+        oneRelationView.setOnProfileClickListener(new OnProfileClickListener() {
             @Override
             public void OnProfileClick(PersonalData personalData) {
                 if (profileClickListener != null) {
@@ -87,7 +105,31 @@ public class HomeItemView extends RecyclerView.ViewHolder {
             }
         });
 
+        twoRelationView.setOnProfileClickListener(new OnProfileClickListener() {
+            @Override
+            public void OnProfileClick(PersonalData personalData) {
+                if (profileClickListener != null) {
+                    profileClickListener.OnProfileClick(personalData);
+                }
+            }
+        });
+        threeRelationView.setOnProfileClickListener(new OnProfileClickListener() {
+            @Override
+            public void OnProfileClick(PersonalData personalData) {
+                if (profileClickListener != null) {
+                    profileClickListener.OnProfileClick(personalData);
+                }
+            }
+        });
 
+        fourRelationView.setOnProfileClickListener(new OnProfileClickListener() {
+            @Override
+            public void OnProfileClick(PersonalData personalData) {
+                if (profileClickListener != null) {
+                    profileClickListener.OnProfileClick(personalData);
+                }
+            }
+        });
         pictureView.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.image_opacity));
     }
 
@@ -96,58 +138,60 @@ public class HomeItemView extends RecyclerView.ViewHolder {
     public void setData(final ProductData data) {
         productData = data;
         titleView.setText(data.title);
-        for (int i = 0; i < 5; i++) {
-            TagBoxView tagBoxView = new TagBoxView(context);
-            switch (i) {
-                case 0:
-                    tagBoxView.setContent(data.name);
-                    break;
-                case 1:
-                    tagBoxView.setContent(data.price);
-                    break;
-                case 2:
-                    tagBoxView.setContent(data.address);
-                    break;
-                case 3:
-                    tagBoxView.setContent("" + data.order_count);
-                    break;
-                case 4:
-                    tagBoxView.setContent(data.updated_time);
-                    break;
-            }
-            mFlowlayout.addView(tagBoxView, FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
+        NumberFormat nf = NumberFormat.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        productNameTag.setContent(data.name);
+        priceTag.setContent(nf.format(Integer.parseInt(data.price)) + "원");
+        addressTag.setContent(data.address);
+        orderCountTag.setContent("주문수 " + data.order_count);
+        try {
+            updateDateTag.setContent("업데이트 " + sdf.format(sdf.parse(data.updated_time)));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        sellerNameView.setText(data.seller.last_name + data.seller.first_name);
-        if(!data.images.isEmpty()) {
+        if (!data.images.isEmpty()) {
             Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
         }
         if (data.seller.profile.image_url != null) {
             Glide.with(itemView.getContext()).load(data.seller.profile.image_url).into(profileView);
         }
-        NetworkManager.getInstance().getUserInfo(itemView.getContext(), new NetworkManager.OnResultListener<PersonalData>() {
+        NetworkManager.getInstance().getMyUserInfo(itemView.getContext(), new NetworkManager.OnResultListener<PersonalData>() {
             @Override
-            public void onSuccess(Request request, PersonalData result) {
-                mAdapter.add(result);   //나 자신 추가
+            public void onSuccess(Request request, PersonalData me) {
                 List<String> key = new ArrayList<String>();
                 List<String> val = new ArrayList<String>();
-                key.addAll(data.relationships.keySet());
+                key.addAll(data.relationships.keySet());    //key값 넣기
                 for (int i = 0; i < key.size(); i++) {
-                    val.add(data.relationships.get(key.get(i)));
+                    val.add(data.relationships.get(key.get(i)));    //value 값 넣기
                 }
-                if (data.friend != null && !result.profile.phone_number.equals(data.friend.profile.phone_number)) { //친구가있다면
-                    addFriends(key, val, result, data);     //나와 친구 relation
-                    if (data.manager != null && !data.friend.profile.phone_number.equals(data.manager.profile.phone_number)) {
-                        addManager(key, val, data.friend, data); //친구와 중계자 사이
-                        if (data.seller != null && !data.manager.profile.phone_number.equals(data.seller.profile.phone_number)) {
-                            addSeller(key, val, data.manager, data);  //중계자와 판매자 relation
-                        }
-                    }
+                if (data.friend != null) {
+                    setRelationVisible(TYPE_FOUR_RELATION);
+                    String meFriendRelation = data.relationships.get(me.id + "-" + data.friend.id);
+                    String friendManagerRelation = data.relationships.get(data.friend.id + "-" + data.manager.id);
+                    String managerSellerRelation = data.relationships.get(data.manager.id + "-" + data.seller.id);
+                    sellerNameView.setText(data.friend.last_name + data.friend.first_name + "의 " + friendManagerRelation + "의 " + managerSellerRelation);
+                    fourRelationView.setFourRelation(me, data, meFriendRelation, friendManagerRelation, managerSellerRelation);
+                    //four
                 } else {
-                    if (data.manager != null && !result.profile.phone_number.equals(data.manager.profile.phone_number)) {
-                        addManager(key, val, result, data); //나와 중계자 relation
-                        if (data.seller != null && !data.manager.profile.phone_number.equals(data.seller.profile.phone_number)) {
-                            addSeller(key, val, data.manager, data);  //중계자와 판매자 relation
+                    if (data.manager.id == me.id) {
+                        if (data.seller.id == me.id) {
+                            setRelationVisible(TYPE_ONE_RELATION);
+                            oneRelationView.setOneRelation(me);
+                            //one
+                        } else {
+                            setRelationVisible(TYPE_TWO_RELATION);
+                            String relation = data.relationships.get(me.id + "-" + data.seller.id);
+                            sellerNameView.setText(me.last_name + me.first_name + "의 " + relation);
+                            twoRelationView.setTwoRelation(me, data, relation);
+                            //two
                         }
+                    } else {
+                        setRelationVisible(TYPE_THREE_RELATION);
+                        String meManagerrelation = data.relationships.get(me.id + "-" + data.manager.id);
+                        String managerSellerRelation = data.relationships.get(data.manager.id + "-" + data.seller.id);
+                        sellerNameView.setText(data.manager.last_name + data.manager.first_name + "의 " + managerSellerRelation);
+                        threeRelationView.setThreeRelation(me, data, meManagerrelation, managerSellerRelation);
+                        //three
                     }
                 }
 
@@ -161,57 +205,37 @@ public class HomeItemView extends RecyclerView.ViewHolder {
 
     }
 
-    private void addFriends(List<String> key, List<String> val, PersonalData me, ProductData data) {
-        long subject_id = me.profile.id;
-        long object_id = data.friend.profile.id;
-        String temp = subject_id + "-" + object_id;
+    private static final int TYPE_ONE_RELATION = 1;
+    private static final int TYPE_TWO_RELATION = 2;
+    private static final int TYPE_THREE_RELATION = 3;
+    private static final int TYPE_FOUR_RELATION = 4;
 
-        for (int i = 0; i < key.size(); i++) {
-            if (temp.equals(key.get(i))) {
-
-                RelationshipsData relationshipsData = new RelationshipsData();
-                relationshipsData.relationId = temp;
-                relationshipsData.relationName = val.get(i);
-                mAdapter.add(relationshipsData);
-                mAdapter.add(data.friend);
-                //manager relation 추가
-
-            }
-        }
-    }
-
-    private void addManager(List<String> key, List<String> val, PersonalData me, ProductData data) {
-        long subject_id = me.profile.id;
-        long object_id = data.manager.profile.id;
-        String temp = subject_id + "-" + object_id;
-
-
-        for (int i = 0; i < key.size(); i++) {
-            if (temp.equals(key.get(i))) {
-                RelationshipsData relationshipsData = new RelationshipsData();
-                relationshipsData.relationId = temp;
-                relationshipsData.relationName = val.get(i);
-                mAdapter.add(relationshipsData);
-                mAdapter.add(data.manager);
-                //manager relation 추가
-            }
-        }
-    }
-
-    private void addSeller(List<String> key, List<String> val, PersonalData me, ProductData data) {
-        long subject_id = me.profile.id;
-        long object_id = data.seller.profile.id;
-        String temp = subject_id + "-" + object_id;
-
-        for (int i = 0; i < key.size(); i++) {
-            if (temp.equals(key.get(i))) {
-                RelationshipsData relationshipsData = new RelationshipsData();
-                relationshipsData.relationId = temp;
-                relationshipsData.relationName = val.get(i);
-                mAdapter.add(relationshipsData);
-                mAdapter.add(data.seller);
-                //manager relation 추가
-            }
+    private void setRelationVisible(int type) {
+        switch (type) {
+            case TYPE_ONE_RELATION:
+                oneRelationView.setVisibility(View.VISIBLE);
+                twoRelationView.setVisibility(View.GONE);
+                threeRelationView.setVisibility(View.GONE);
+                fourRelationView.setVisibility(View.GONE);
+                break;
+            case TYPE_TWO_RELATION:
+                twoRelationView.setVisibility(View.VISIBLE);
+                oneRelationView.setVisibility(View.GONE);
+                threeRelationView.setVisibility(View.GONE);
+                fourRelationView.setVisibility(View.GONE);
+                break;
+            case TYPE_THREE_RELATION:
+                threeRelationView.setVisibility(View.VISIBLE);
+                twoRelationView.setVisibility(View.GONE);
+                oneRelationView.setVisibility(View.GONE);
+                fourRelationView.setVisibility(View.GONE);
+                break;
+            case TYPE_FOUR_RELATION:
+                fourRelationView.setVisibility(View.VISIBLE);
+                twoRelationView.setVisibility(View.GONE);
+                threeRelationView.setVisibility(View.GONE);
+                oneRelationView.setVisibility(View.GONE);
+                break;
         }
     }
 

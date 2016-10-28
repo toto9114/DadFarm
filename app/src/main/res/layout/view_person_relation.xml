@@ -6,15 +6,16 @@
     android:background="#fff"
     android:paddingLeft="16dp"
     android:paddingRight="12dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp">
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:srcCompat="@drawable/avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/avatar"
         android:id="@+id/image_profile"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="16dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,7 +28,9 @@
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_name" />
+            android:id="@+id/text_name"
+            android:layout_marginBottom="6dp"
+            android:textColor="#de000000" />
 
         <TextView
             android:text="TextView"
@@ -42,14 +45,12 @@
         app:srcCompat="@drawable/ic_sms"
         android:id="@+id/image_sms"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="8dp"
-        android:padding="4dp" />
+        android:layout_marginRight="16dp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_local_phone"
         android:id="@+id/image_phone_call"
-        android:layout_gravity="center_vertical"
-        android:padding="4dp" />
+        android:layout_gravity="center_vertical" />
 </LinearLayout>

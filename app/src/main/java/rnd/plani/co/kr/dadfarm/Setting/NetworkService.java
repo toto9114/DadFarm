@@ -14,7 +14,7 @@ import rnd.plani.co.kr.dadfarm.Data.TermsOrPrivacy;
  * Created by toto9114 on 2016-10-20.
  */
 
-public interface TermsOrPrivacyService {
+public interface NetworkService {
     @Headers("Content-Type: application/json")
     @GET("terms/")
     Call<TermsOrPrivacy> getTerms(@Header("Authorization") String authorization);

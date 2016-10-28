@@ -41,24 +41,24 @@ public class BottomTabMenu extends FrameLayout{
             case HOME_MENU:
                 titleView.setText(R.string.home_menu);
                 titleView.setTextColor(selectColor);
-                iconView.setImageResource(R.drawable.ic_home_black);
+                iconView.setImageResource(R.drawable.ic_home_white);
                 iconView.setColorFilter(selectColor, PorterDuff.Mode.SRC_IN);
                 break;
             case ORDER_LIST_MENU:
                 titleView.setText(R.string.order_list_menu);
-                iconView.setImageResource(R.drawable.ic_shopping_basket_black);
+                iconView.setImageResource(R.drawable.ic_shopping_basket_white);
                 break;
             case ADD_PRODUCT_MENU:
                 titleView.setText(R.string.regist_product_menu);
-                iconView.setImageResource(R.drawable.ic_add_circle_outline_black);
+                iconView.setImageResource(R.drawable.ic_add_circle_outline_white);
                 break;
             case NOTIFICATION_MENU:
                 titleView.setText(R.string.notification_menu);
-                iconView.setImageResource(R.drawable.ic_notifications_none_black);
+                iconView.setImageResource(R.drawable.ic_notifications_none_white);
                 break;
             case SETTING_MENU:
                 titleView.setText(R.string.settings);
-                iconView.setImageResource(R.drawable.ic_settings_black);
+                iconView.setImageResource(R.drawable.ic_settings_white);
                 break;
         }
     }

@@ -9,7 +9,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
+import rnd.plani.co.kr.dadfarm.Data.OrderResultData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -30,10 +33,15 @@ public class SimpleProductView extends RecyclerView.ViewHolder {
         pictureView.setColorFilter(ContextCompat.getColor(itemView.getContext(),R.color.image_opacity));
     }
 
-    public void setOrderItem(ProductData data){
-        titleView.setText(data.title);
-        productUnitView.setText(data.name);
-        dateView.setText(data.updated_time);
+    public void setOrderItem(OrderResultData data){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        titleView.setText(data.product_title);
+        productUnitView.setText(data.product_name +" x "+ data.quantity);
+        try {
+            dateView.setText(sdf.format(sdf.parse(data.updated_time)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(!data.images.isEmpty()) {
             Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
         }
@@ -42,7 +50,7 @@ public class SimpleProductView extends RecyclerView.ViewHolder {
         NumberFormat nf = NumberFormat.getInstance();
         titleView.setText(data.title);
         productUnitView.setText(data.name);
-        dateView.setText(data.price);
+        dateView.setText(nf.format(Integer.parseInt(data.price))+"원");
         if(!data.images.isEmpty()) {
             Glide.with(itemView.getContext()).load(data.images.get(0)).into(pictureView);
         }

@@ -7,5 +7,5 @@ import java.util.List;
  */
 
 public class FriendsData {
-    List<String> friends;
+    public List<String> friends;
 }

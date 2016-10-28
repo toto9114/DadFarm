@@ -14,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeTextToolbar;
 import rnd.plani.co.kr.dadfarm.Data.TermsOrPrivacy;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
@@ -26,16 +27,19 @@ public class TermsOrPrivacyActivity extends AppCompatActivity {
     public static final String TYPE_PRIVACY = "privacy";
 
     WebView webView;
+    BlackThemeTextToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_policy);
+        toolbar = (BlackThemeTextToolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webView);
+
     }
 
     Retrofit retrofit;
-    TermsOrPrivacyService service;
+    NetworkService service;
 
     @Override
     protected void onStart() {
@@ -59,7 +63,7 @@ public class TermsOrPrivacyActivity extends AppCompatActivity {
                         .baseUrl("http://restapi-stage.pafarm.kr:9100/api/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                service = retrofit.create(TermsOrPrivacyService.class);
+                service = retrofit.create(NetworkService.class);
                 Call<TermsOrPrivacy> terms = service.getTerms(PropertyManager.getInstance().getPafarmToken());
 
                 terms.enqueue(new Callback<TermsOrPrivacy>() {
@@ -75,7 +79,7 @@ public class TermsOrPrivacyActivity extends AppCompatActivity {
                     }
                 });
 
-
+                toolbar.setToolbar("닫기","서비스 이용약관","");
                 break;
             case TYPE_PRIVACY:
                 NetworkManager.getInstance().getPrivacy(this, new NetworkManager.OnResultListener<TermsOrPrivacy>() {
@@ -91,6 +95,7 @@ public class TermsOrPrivacyActivity extends AppCompatActivity {
 
                     }
                 });
+                toolbar.setToolbar("닫기","개인정보 보호정책","");
                 break;
         }
 

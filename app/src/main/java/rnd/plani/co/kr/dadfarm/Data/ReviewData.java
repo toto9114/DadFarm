@@ -6,11 +6,8 @@ package rnd.plani.co.kr.dadfarm.Data;
 public class ReviewData {
     public long id;
     public long product_id;
-    public String name;
-    public String relation;
-    public String date;
+    public OrderResultData order;
     public String content;
-    public String orderInfo;
-    public String profileImage;
-    public String product_name;
+    public String updated_time;
+
 }

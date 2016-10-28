@@ -31,6 +31,7 @@ import com.digits.sdk.android.DigitsOAuthSigning;
 import com.digits.sdk.android.DigitsSession;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.onesignal.OneSignal;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -178,10 +179,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void isExistNmae() {
-        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
+        NetworkManager.getInstance().getMyUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
                 PropertyManager.getInstance().setUserId(result.id);
+                PropertyManager.getInstance().setFirstName(result.first_name);
+                PropertyManager.getInstance().setLastName(result.last_name);
+                PropertyManager.getInstance().setProfileId(result.profile.id);
+                if (result.profile.image_url != null) {
+                    PropertyManager.getInstance().setProfileUrl(result.profile.image_url);
+                }
+                PropertyManager.getInstance().setPhoneNum(result.profile.phone_number);
                 if (result != null) {
                     if (TextUtils.isEmpty(result.first_name) && TextUtils.isEmpty(result.last_name)) {
                         startActivity(new Intent(SplashActivity.this, InsertNameActivity.class));
@@ -224,15 +232,58 @@ public class SplashActivity extends AppCompatActivity {
 
     private void doRealStart() {
         if (!TextUtils.isEmpty(PropertyManager.getInstance().getPafarmToken())) {
-            loginView.setVisibility(View.GONE);
-            mHandler.postDelayed(new Runnable() {
+            NetworkManager.getInstance().getMyUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
                 @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+                public void onSuccess(Request request, PersonalData result) {
+                    if (result != null) {
+                        PropertyManager.getInstance().setUserId(result.id);
+                        PropertyManager.getInstance().setFirstName(result.first_name);
+                        PropertyManager.getInstance().setLastName(result.last_name);
+                        PropertyManager.getInstance().setProfileId(result.profile.id);
+                        if (result.profile.image_url != null) {
+                            PropertyManager.getInstance().setProfileUrl(result.profile.image_url);
+                        }
+                        PropertyManager.getInstance().setPhoneNum(result.profile.phone_number);
+                        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+                            @Override
+                            public void idsAvailable(String userId, String registrationId) {
+                                if (userId != null) {
+                                    NetworkManager.getInstance().uploadOnesignalId(SplashActivity.this, userId, new NetworkManager.OnResultListener<Boolean>() {
+                                        @Override
+                                        public void onSuccess(Request request, Boolean result) {
+                                            if (result) {
+                                                if (!TextUtils.isEmpty(PropertyManager.getInstance().getPafarmToken())) {
+                                                    loginView.setVisibility(View.GONE);
+                                                    mHandler.postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                                            finish();
+                                                        }
+                                                    }, 1000);
+                                                } else {
+                                                    loginView.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Request request, int code, Throwable cause) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
                 }
-            }, 1000);
-        } else {
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+
+                }
+            });
+        }else{
             loginView.setVisibility(View.VISIBLE);
         }
     }

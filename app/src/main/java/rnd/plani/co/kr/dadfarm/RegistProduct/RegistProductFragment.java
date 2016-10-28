@@ -21,6 +21,7 @@ import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductListResultData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
+import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
 
@@ -43,6 +44,7 @@ public class RegistProductFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     AddedProductAdapter mAdapter;
     LinearLayoutManager layoutManager;
+    FrameLayout containerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,7 @@ public class RegistProductFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_regist_product, container, false);
         titleLabelView = (FrameLayout) view.findViewById(R.id.title_label);
+        containerView = (FrameLayout) view.findViewById(R.id.container);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             titleLabelView.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
         }
@@ -72,9 +75,7 @@ public class RegistProductFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (refreshLayout.isRefreshing()) {
-                    refreshLayout.setRefreshing(false);
-                }
+                refresh();
             }
         });
         recyclerView.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
@@ -100,7 +101,7 @@ public class RegistProductFragment extends Fragment {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
+        NetworkManager.getInstance().getMyUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
 
@@ -118,6 +119,7 @@ public class RegistProductFragment extends Fragment {
                             emptyView.setVisibility(View.GONE);
                         }
                         titleView.setText(mAdapter.getItemCount() - AddedProductAdapter.HEADER_SIZE + "개의 상품을 중계하고 있습니다");
+                        containerView.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -133,5 +135,36 @@ public class RegistProductFragment extends Fragment {
             }
         });
 
+    }
+
+    private void refresh() {
+        NetworkManager.getInstance().getProduct(getContext(), PropertyManager.getInstance().getUserId(), new NetworkManager.OnResultListener<ProductListResultData>() {
+            @Override
+            public void onSuccess(Request request, ProductListResultData result) {
+                mAdapter.clear();
+                if (result != null) {
+                    mAdapter.addAll(result.results);
+                }
+                if (mAdapter.getItemCount() == AddedProductAdapter.HEADER_SIZE) {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
+                titleView.setText(mAdapter.getItemCount() - AddedProductAdapter.HEADER_SIZE + "개의 상품을 중계하고 있습니다");
+                containerView.setVisibility(View.VISIBLE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
+            }
+        });
     }
 }

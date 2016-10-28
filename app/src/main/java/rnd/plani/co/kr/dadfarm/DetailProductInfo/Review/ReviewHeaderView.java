@@ -1,10 +1,14 @@
 package rnd.plani.co.kr.dadfarm.DetailProductInfo.Review;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -17,17 +21,16 @@ public class ReviewHeaderView extends FrameLayout {
 
     public ReviewHeaderView(Context context) {
         super(context);
-        inflate(getContext(), R.layout.view_review_header,this);
+        inflate(getContext(), R.layout.view_review_header, this);
         profileView = (ImageView) findViewById(R.id.image_profile);
         nameView = (TextView) findViewById(R.id.text_name);
-        roleView = (TextView) findViewById(R.id.text_role);
-
-        nameView.setText("백우진");
-        roleView.setText("판매자");
     }
 
-    public void setReviewHeader(){
-
+    public void setReviewHeader(PersonalData seller) {
+        if (!TextUtils.isEmpty(seller.profile.image_url)) {
+            Glide.with(getContext()).load(seller.profile.image_url).into(profileView);
+        }
+        nameView.setText(seller.last_name + seller.first_name);
     }
 
 }

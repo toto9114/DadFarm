@@ -66,9 +66,14 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
     }
 
     ProductData data = null;
+    PersonalData me = null;
 
     public void setProduct(ProductData data) {
         this.data = data;
+    }
+
+    public void setMyInfo(PersonalData me) {
+        this.me = me;
     }
 
     @Override
@@ -78,6 +83,7 @@ public class DetailInfoAdapter extends RecyclerView.Adapter implements OnReviewB
                 ((TitleInfoView) holder).setTitleView(data);
                 break;
             case VIEW_TYPE_RELATION:
+                ((RelationListView) holder).setRelationList(data);
                 ((RelationListView) holder).setOnSmsClickListener(this);
                 ((RelationListView) holder).setOnPhoneCallClickListener(this);
                 ((RelationListView) holder).setOnProfileClickListener(this);

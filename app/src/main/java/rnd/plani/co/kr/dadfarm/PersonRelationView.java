@@ -1,6 +1,7 @@
 package rnd.plani.co.kr.dadfarm;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,7 +30,9 @@ public class PersonRelationView extends FrameLayout {
     }
 
     public void setRelationView(PersonalData personalData,String relation){
-        Glide.with(getContext()).load(personalData.profile.image_url).into(profileView);
+        if(!TextUtils.isEmpty(personalData.profile.image_url)) {
+            Glide.with(getContext()).load(personalData.profile.image_url).into(profileView);
+        }
         nameView.setText(personalData.last_name+personalData.first_name);
         relationView.setText(relation);
     }

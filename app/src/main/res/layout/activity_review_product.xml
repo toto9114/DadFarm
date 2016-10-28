@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="rnd.plani.co.kr.dadfarm.DetailProductInfo.Review.ReviewProductActivity">
     <rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeShareToolbar
         android:layout_width="match_parent"
@@ -18,5 +19,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        app:frv_dividerHeight="1dp"/>
 </RelativeLayout>

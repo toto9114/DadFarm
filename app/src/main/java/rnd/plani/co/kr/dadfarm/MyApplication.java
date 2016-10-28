@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.Digits;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.onesignal.OneSignal;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -25,6 +26,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
+        OneSignal.startInit(this).init();
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Digits.Builder digitBuilder = new Digits.Builder().withTheme(R.style.CustomDigitsTheme);
         Fabric.with(this, new TwitterCore(authConfig), digitBuilder.build(), new Crashlytics());

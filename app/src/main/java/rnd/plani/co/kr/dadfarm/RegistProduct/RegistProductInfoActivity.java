@@ -1,12 +1,12 @@
 package rnd.plani.co.kr.dadfarm.RegistProduct;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -34,7 +35,9 @@ import okhttp3.Request;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.BlackThemeTextToolbar;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnLeftMenuClickListener;
 import rnd.plani.co.kr.dadfarm.CustomToolbar.OnRightMenuClickListener;
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import rnd.plani.co.kr.dadfarm.Data.UserListResultData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
@@ -56,6 +59,9 @@ public class RegistProductInfoActivity extends AppCompatActivity {
     Button deleteBtn;
     int editType;
     ProductData productData = null;
+    InputMethodManager imm;
+
+    boolean isSaveClick = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +74,12 @@ public class RegistProductInfoActivity extends AppCompatActivity {
         if (editType == TYPE_EDIT_PRODUCT) {
             toolbar.setTitle("상품수정");
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         toolbar.setOnLeftMenuClickListener(new OnLeftMenuClickListener() {
             @Override
             public void OnLeftMenuClick() {
+                imm.hideSoftInputFromWindow(contentView.getWindowToken(), 0);
                 AlertDialog.Builder builder = new AlertDialog.Builder(RegistProductInfoActivity.this);
                 AlertDialog dialog = builder.setTitle(R.string.cancel_edit_product_title)
                         .setMessage(R.string.cancel_edit_product_message)
@@ -98,7 +104,9 @@ public class RegistProductInfoActivity extends AppCompatActivity {
         toolbar.setOnRightMenuClickListener(new OnRightMenuClickListener() {
             @Override
             public void OnRightMenuClick() {
-                uploadProduct();
+                isSaveClick = true;
+                imm.hideSoftInputFromWindow(contentView.getWindowToken(), 0);
+                getPafarmUser();
             }
         });
         listView = (ListView) findViewById(R.id.listView);
@@ -137,9 +145,33 @@ public class RegistProductInfoActivity extends AppCompatActivity {
         });
         mAdapter.setOnCloseClickListener(new OnCloseClickListener() {
             @Override
-            public void onCloseClick(String imageUri) {
-                mAdapter.remove(imageUri);
-                refreshImageList();
+            public void onCloseClick(final String imageUri) {
+                if (editType == TYPE_ADD_PRODUCT) {
+                    Log.e("RegistProductInfo", "Add Product: delete picture success");
+                    mAdapter.remove(imageUri);
+                    refreshImageList();
+                } else {
+                    NetworkManager.getInstance().deleteProductImage(RegistProductInfoActivity.this, imageUri, new NetworkManager.OnResultListener<Boolean>() {
+                        @Override
+                        public void onSuccess(Request request, Boolean isSuccess) {
+                            if (isSuccess) {
+                                mAdapter.remove(imageUri);
+                                refreshImageList();
+                                Log.e("RegistProductInfo", "delete picture success");
+                            } else {
+                                Log.e("RegistProductInfo", "delete picture fail");
+                                //요청실패
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
+
+                }
+
             }
         });
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,19 +186,36 @@ public class RegistProductInfoActivity extends AppCompatActivity {
     private void initData() {
         if (editType != TYPE_ADD_PRODUCT) {
             deleteBtn.setVisibility(View.VISIBLE);
+            long manager_id = productData.manager.id;
+            long seller_id = productData.seller.id;
+            lastNameView.setText(productData.seller.last_name);
+            firstNameView.setText(productData.seller.first_name);
+            phoneNumView.setText(productData.seller.profile.phone_number);
+            hasRelationView.setText(productData.relationships.get(manager_id + "-" + seller_id));
+            isRelationView.setText(productData.relationships.get(seller_id + "-" + manager_id));
+            titleView.setText(productData.title);
+            mAdapter.addAll(productData.images);
+            refreshImageList();
+            contentView.setText(productData.description);
+            addressView.setText(productData.address);
+            productNameView.setText(productData.name);
+            priceView.setText(productData.price);
+            bankNameView.setText(productData.bank_name);
+            bankAccountView.setText(productData.bank_account);
+            bankAccountHolderView.setText(productData.bank_account_holder);
         } else {
             deleteBtn.setVisibility(View.GONE);
         }
     }
 
-    private void deleteProduct(){
+    private void deleteProduct() {
         NetworkManager.getInstance().deleteProduct(this, productData.id, new NetworkManager.OnResultListener<Boolean>() {
             @Override
             public void onSuccess(Request request, Boolean result) {
-                if(result){
+                if (result) {
                     finish();
-                }else{
-                    Toast.makeText(RegistProductInfoActivity.this,"fail",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegistProductInfoActivity.this, "fail", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -176,14 +225,15 @@ public class RegistProductInfoActivity extends AppCompatActivity {
             }
         });
     }
-    private void uploadProduct() {
+
+    private void uploadProduct(long sellerId) {
         ProductData productData = new ProductData();
         productData.title = titleView.getText().toString();
         productData.description = contentView.getText().toString();
         productData.name = productNameView.getText().toString();
         productData.price = priceView.getText().toString();
         productData.address = addressView.getText().toString();
-        productData.seller_id = 13;
+        productData.seller_id = sellerId;
         productData.bank_name = bankNameView.getText().toString();
         productData.bank_account = bankAccountView.getText().toString();
         productData.bank_account_holder = bankAccountHolderView.getText().toString();
@@ -203,11 +253,12 @@ public class RegistProductInfoActivity extends AppCompatActivity {
                                     if (result != null) {
                                         finish();
                                     }
+                                    isSaveClick = false;
                                 }
 
                                 @Override
                                 public void onFailure(Request request, int code, Throwable cause) {
-
+                                    isSaveClick = false;
                                 }
                             });
                         }
@@ -217,13 +268,108 @@ public class RegistProductInfoActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Request request, int code, Throwable cause) {
-
+                    isSaveClick = false;
                 }
             });
         } else {
             //상품수정하기
+            NetworkManager.getInstance().updateProduct(RegistProductInfoActivity.this, this.productData.id, productData, new NetworkManager.OnResultListener<ProductData>() {
+                @Override
+                public void onSuccess(Request request, ProductData result) {
+                    if (result != null) {
+                        for (int i = 0; i < mAdapter.getCount(); i++) {
+                            String imagePath = (String) mAdapter.getItem(i);
+                            if (!imagePath.startsWith("http")) {
+                                Bitmap bmp = resizeBitmapImage(BitmapFactory.decodeFile(imagePath), 512);
+                                File file = bmpToFile(bmp);
+                                NetworkManager.getInstance().uploadProductImage(RegistProductInfoActivity.this, result, file, new NetworkManager.OnResultListener<ProductData>() {
+                                    @Override
+                                    public void onSuccess(Request request, ProductData result) {
+                                        if (result != null) {
+                                            finish();
+                                        }
+                                        isSaveClick = false;
+                                    }
+
+                                    @Override
+                                    public void onFailure(Request request, int code, Throwable cause) {
+                                        isSaveClick = false;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+                    isSaveClick = false;
+                }
+            });
         }
     }
+
+
+    int page = 0;
+    boolean isPafarmUser = false;
+
+    private void getPafarmUser() {
+        page++;
+        final String firstName = firstNameView.getText().toString();
+        final String lastName = lastNameView.getText().toString();
+        final String phoneNum = phoneNumView.getText().toString();
+        NetworkManager.getInstance().getUserInfo(RegistProductInfoActivity.this, page, firstName, lastName, phoneNum, new NetworkManager.OnResultListener<UserListResultData>() {
+            @Override
+            public void onSuccess(Request request, UserListResultData result) {
+                if (result != null) {
+                    if (result.results != null) {
+                        if (result.results.size() == 0) {
+                            if (result.next != null) {
+                                Log.e("RegistProductInfo", "현재페이지에는 찾는 유저가 없지만 다음페이지가 있다.");
+                                getPafarmUser();//현재페이지에는 찾는 유저가 없지만 다음페이지가 있다.
+                            } else {
+                                isPafarmUser = false;
+                                page = 0;
+                                //찾는 유저도 없고 더이상 page도 없다.
+                                String hasRelation = hasRelationView.getText().toString();
+                                String isRelation = isRelationView.getText().toString();
+                                NetworkManager.getInstance().createUser(RegistProductInfoActivity.this, firstName, lastName, phoneNum, hasRelation, isRelation, new NetworkManager.OnResultListener<PersonalData>() {
+                                    @Override
+                                    public void onSuccess(Request request, PersonalData result) {
+                                        if (result != null) {
+                                            Log.e("RegistProductInfo", "create User");
+                                            uploadProduct(result.id);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Request request, int code, Throwable cause) {
+
+                                    }
+                                });
+                                Log.e("RegistProductInfo", "찾는 유저도 없고 더이상 page도 없다.");
+                                return;
+                            }
+                        } else {
+                            isPafarmUser = true;
+                            page = 0;
+                            Log.e("RegistProductInfo", "유저가 있다.");
+                            uploadProduct(result.results.get(0).id);
+                            //유저가 있다.
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+                page = 0;
+            }
+        });
+        Log.e("RegistProductInfo", "page : " + page);
+    }
+
 
     public Bitmap resizeBitmapImage(
             Bitmap bmpSource, int maxResolution) {

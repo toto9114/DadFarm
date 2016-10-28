@@ -40,6 +40,8 @@ public class PersonHorizontalView extends RecyclerView.ViewHolder {
         });
     }
 
+
+
     PersonalData data = null;
 
     public void setProfile(PersonalData data) {

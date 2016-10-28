@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 public class CustomShareDialog extends DialogFragment {
 
+    public static final String EXTRA_LINK_URL = "link";
+
     private static final int TYPE_FACEBOOK = 1;
     private static final int TYPE_KAKAO = 2;
     private static final int TYPE_BAND = 3;
@@ -39,6 +42,17 @@ public class CustomShareDialog extends DialogFragment {
     LinearLayout facebook, kakao, band;
     KakaoLink kakaoLink;
     KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder;
+
+    String linkUrl = null;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            linkUrl = getArguments().getString(EXTRA_LINK_URL);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +88,7 @@ public class CustomShareDialog extends DialogFragment {
             public void onClick(View v) {
                 try {
                     kakaoTalkLinkMessageBuilder.addText("test").build();
-                    kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder,getContext());
+                    kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, getContext());
                 } catch (KakaoParameterException e) {
                     e.printStackTrace();
                 }

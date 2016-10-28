@@ -5,27 +5,15 @@
     tools:context=".OrderList.OrderListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <FrameLayout
-        android:id="@+id/title_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black_theme_toolbar">
-
-        <TextView
-            android:id="@+id/text_title"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:text="총 0건의 주문내역이 있습니다"
-            android:textColor="@android:color/white" />
-    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/title_label">
+        android:layout_below="@+id/title_label"
+        android:visibility="gone"
+        android:id="@+id/container">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refresh"
@@ -46,5 +34,23 @@
             android:gravity="center"
             android:paddingLeft="56dp"
             android:paddingRight="56dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/title_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_theme_toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
     </FrameLayout>
 </RelativeLayout>

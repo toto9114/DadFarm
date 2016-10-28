@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
-import rnd.plani.co.kr.dadfarm.Data.RelationData;
+import rnd.plani.co.kr.dadfarm.Data.Relationships;
+import rnd.plani.co.kr.dadfarm.Data.RelationshipsData;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 
 /**
@@ -16,19 +17,20 @@ import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
  */
 
 public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, OnPhoneCallClickListener, OnProfileClickListener {
-    List<RelationData> items = new ArrayList<>();
+    List<Relationships> items = new ArrayList<>();
 
     private static final int VIEW_TYPE_PERSON = 0;
     private static final int VIEW_TYPE_RELATION = 1;
 
-    public void add(RelationData data) {
+
+    public void add(Relationships data) {
         items.add(data);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 2 == 0) {
+        if (items.get(position) instanceof PersonalData) {
             return VIEW_TYPE_PERSON;
         } else {
             return VIEW_TYPE_RELATION;
@@ -65,7 +67,7 @@ public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, 
                 } else {
                     personView = (PersonVerticalRelationView) convertView;
                 }
-                personView.setPersonView(items.get(position));
+                personView.setPersonView((PersonalData) items.get(position), position);
                 personView.setOnPhoneCallClickListener(this);
                 personView.setOnSmsClickListener(this);
                 personView.setOnProfileClickListener(this);
@@ -77,7 +79,7 @@ public class RelationAdapter extends BaseAdapter implements OnSmsClickListener, 
                 } else {
                     divider = (RelationDivider) convertView;
                 }
-                divider.setRelation(items.get(position).relation);
+                divider.setRelation(((RelationshipsData) items.get(position)).relationName);
                 return divider;
         }
         return null;

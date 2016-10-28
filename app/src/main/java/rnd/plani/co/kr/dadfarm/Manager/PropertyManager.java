@@ -44,6 +44,23 @@ public class PropertyManager {
         return mPref.getString(REG_LAST_NAME,"");
     }
 
+    private static final String REG_PROFILE_ID = "profileId";
+    public void setProfileId(long id){
+        mEditor.putLong(REG_PROFILE_ID,id);
+        mEditor.commit();
+    }
+    public long getProfileId(){
+        return mPref.getLong(REG_PROFILE_ID,-1);
+    }
+
+    private static final String REG_PROFILE_URL = "profileUrl";
+    public void setProfileUrl(String url){
+        mEditor.putString(REG_PROFILE_URL,url);
+        mEditor.commit();
+    }
+    public String getProfileUrl(){
+        return mPref.getString(REG_PROFILE_URL,"");
+    }
 
     private static final String REG_PHONE = "phoneNumber";
     public void setPhoneNum(String phone){

@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <permission
         android:name="rnd.plani.co.kr.dadfarm.permission.C2D_MESSAGE"
@@ -54,31 +54,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SyncAddressActivity" />
-        <activity android:name=".SyncLoadingActivity" />
         <activity
             android:name=".DetailProductInfo.DetailProductActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
         <activity
             android:name=".DetailProductInfo.Review.ReviewProductActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
         <activity
             android:name=".DetailProductInfo.Order.OrderProductActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".DetailProductInfo.Review.WriteReviewActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
         <activity
             android:name=".RegistProduct.RegistProductInfoActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".EditProductInfoActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".DetailProductInfo.Relation.RelationInfoActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -86,7 +81,7 @@
 
         <activity
             android:name=".DetailProductInfo.Order.OrderCompleteActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -116,9 +111,11 @@
 
         <activity
             android:name=".Certification.FindFriendsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
         <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
-        <activity android:name=".Setting.TermsOrPrivacyActivity" />
+        <activity
+            android:name=".Setting.TermsOrPrivacyActivity"
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -149,8 +146,11 @@
             android:name=".GCM.RegistrationIntentService"
             android:exported="false" />
 
-        <activity android:name=".Certification.InsertNameActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Certification.InsertNameActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Setting.OpenSourceLicenseActivity"
+            android:theme="@style/AppTheme.NoActionBar.NoStatusBar"></activity>
     </application>
 
 </manifest>

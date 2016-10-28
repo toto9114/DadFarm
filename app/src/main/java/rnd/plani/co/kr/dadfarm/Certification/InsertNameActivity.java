@@ -37,8 +37,8 @@ public class InsertNameActivity extends AppCompatActivity {
                 String firstName = firstNameView.getText().toString();
                 String lastName = lastNameView.getText().toString();
                 if (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)) {
-                    if (uid != -1) {
-                        NetworkManager.getInstance().updateUserInfo(InsertNameActivity.this, uid, firstName, lastName, new NetworkManager.OnResultListener<PersonalData>() {
+                    if (userId != -1) {
+                        NetworkManager.getInstance().updateUserInfo(InsertNameActivity.this, userId, firstName, lastName, new NetworkManager.OnResultListener<PersonalData>() {
                             @Override
                             public void onSuccess(Request request, PersonalData result) {
                                 if(result != null){
@@ -57,17 +57,17 @@ public class InsertNameActivity extends AppCompatActivity {
         });
     }
 
-    long uid = -1;
+    long userId = -1;
 
     @Override
     protected void onStart() {
         super.onStart();
-        NetworkManager.getInstance().getUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
+        NetworkManager.getInstance().getMyUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
                 if (result != null) {
-                    uid = result.id;
-                    PropertyManager.getInstance().setUserId(uid);
+                    userId = result.id;
+                    PropertyManager.getInstance().setUserId(userId);
                 }
             }
 

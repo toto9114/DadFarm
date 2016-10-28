@@ -10,5 +10,5 @@ public class OrderListResultData {
     public int count;
     public String next;
     public String previous;
-    public List<ProductData> results;
+    public List<OrderResultData> results;
 }

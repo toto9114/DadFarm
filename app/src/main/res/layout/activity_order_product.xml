@@ -27,46 +27,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="14dp">
 
                 <TextView
                     android:text="상품명"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView19" />
 
                 <TextView
-                    android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_product_name"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@color/text_darker_black" />
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="17dp">
 
                 <TextView
                     android:text="주문금액"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView21" />
 
                 <TextView
-                    android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_price"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@color/text_darker_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -77,7 +80,7 @@
 
                 <TextView
                     android:text="수량"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView22" />
 
@@ -89,7 +92,13 @@
                     android:layout_weight="1"
                     android:inputType="number"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:padding="4dp" />
+                    android:textColor="@color/text_darker_black"
+                    android:textSize="14sp"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="12dp"
+                    android:text="1" />
 
             </LinearLayout>
 
@@ -101,19 +110,22 @@
 
                 <TextView
                     android:text="주소"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView23" />
 
                 <EditText
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="54dp"
                     android:inputType="textPersonName"
                     android:ems="10"
                     android:id="@+id/edit_address"
                     android:layout_weight="1"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textColor="@color/text_darker_black"
+                    android:textSize="14sp"
+                    android:hint="배송 받을 주소를 입력해주세요." />
             </LinearLayout>
 
             <LinearLayout
@@ -124,7 +136,7 @@
 
                 <TextView
                     android:text="수령인"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView24" />
 
@@ -136,18 +148,23 @@
                     android:id="@+id/edit_reciever"
                     android:layout_weight="1"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:padding="4dp" />
+                    android:textColor="@color/text_darker_black"
+                    android:textSize="14sp"
+                    android:paddingLeft="12dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="11dp"
+                    android:paddingRight="12dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="18dp">
 
                 <TextView
                     android:text="연락처"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView25" />
 
@@ -159,39 +176,45 @@
                     android:layout_weight="1"
                     android:inputType="number"
                     android:background="@drawable/bg_white_background_gray_stroke"
-                    android:padding="4dp" />
+                    android:textColor="@color/text_darker_black"
+                    android:textSize="14sp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="11dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="17dp">
 
                 <TextView
                     android:text="입금정보"
-                    android:layout_width="100dp"
+                    android:layout_width="71dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView17" />
 
                 <TextView
-                    android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_account"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@color/text_darker_black" />
             </LinearLayout>
             <Button
                 android:text="주문하기"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:id="@+id/btn_order"
                 android:textColor="@android:color/white"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:enabled="false"
                 android:background="@drawable/selector_active_button"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

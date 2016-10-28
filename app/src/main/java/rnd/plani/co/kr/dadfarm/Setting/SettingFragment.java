@@ -20,23 +20,40 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.digits.sdk.android.ContactsCallback;
 import com.digits.sdk.android.Digits;
+import com.digits.sdk.android.models.Contacts;
+import com.digits.sdk.android.models.DigitsUser;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rnd.plani.co.kr.dadfarm.Certification.FriendsData;
 import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ProfileData;
 import rnd.plani.co.kr.dadfarm.Manager.NetworkManager;
@@ -61,6 +78,10 @@ public class SettingFragment extends Fragment {
     ImageView syncView;
     TextView syncDateView, phoneView;
     EditText firstNameView, lastNameView;
+    FrameLayout frameLayout;
+
+    Retrofit retrofit;
+    NetworkService service;
     private static final int REQUEST_PICK_PICTURE = 100;
     private static final int REQUEST_IMAGE_CROP = 200;
 
@@ -70,8 +91,10 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 
+
+        frameLayout = (FrameLayout) view.findViewById(R.id.frame_profile);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
+            frameLayout.setPadding(0, Utils.getStatusBarHeight(), 0, 0);
         }
         firstNameView = (EditText) view.findViewById(R.id.edit_first_name);
         lastNameView = (EditText) view.findViewById(R.id.edit_last_name);
@@ -90,11 +113,64 @@ public class SettingFragment extends Fragment {
                 String lastName = lastNameView.getText().toString();
                 NetworkManager.getInstance().updateUserInfo(getContext(), personalData.id, firstName, lastName, new NetworkManager.OnResultListener<PersonalData>() {
                     @Override
-                    public void onSuccess(Request request, PersonalData result) {
-                        Toast.makeText(getContext(), result.first_name + result.last_name, Toast.LENGTH_SHORT).show();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        syncDateView.setText(String.format(getString(R.string.sync_complete_message), sdf.format(new Date())));
-                        syncView.clearAnimation();
+                    public void onSuccess(Request request, final PersonalData me) {
+                        if (me != null) {
+                            Digits.findFriends(new ContactsCallback<Contacts>() {
+                                @Override
+                                public void success(Result<Contacts> result) {
+                                    final List<DigitsUser> users = result.data.users;
+
+                                    retrofit = new Retrofit.Builder()
+                                            .baseUrl("http://restapi-stage.pafarm.kr:9100/api/")
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+                                    service = retrofit.create(NetworkService.class);
+                                    ArrayList<String> friends = new ArrayList<String>();
+                                    JSONObject jsonObject = new JSONObject();
+                                    JSONArray jsonArray = new JSONArray();
+                                    FriendsData data = new FriendsData();
+                                    List<String> list = new ArrayList<String>();
+                                    ;
+                                    for (int i = 0; i < users.size(); i++) {
+                                        list.add(users.get(i).idStr);
+                                    }
+                                    data.friends = list;
+                                    try {
+                                        jsonObject.put("friends", jsonArray);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    Call<ResponseBody> isSuccess = service.uploadFriends("Bearer " + PropertyManager.getInstance().getPafarmToken(), data);
+
+                                    isSuccess.enqueue(new Callback<ResponseBody>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            int code = response.code();
+                                            Log.e("FindFriends", "" + code);
+                                            if (code == 200) {
+                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                                syncDateView.setText(String.format(getString(R.string.sync_complete_message), sdf.format(new Date())));
+                                                PropertyManager.getInstance().setSyncDate(sdf.format(new Date()));
+                                                syncView.clearAnimation();
+                                            } else {
+                                                Log.e("FindFriends", "fail");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void failure(TwitterException exception) {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -218,6 +294,14 @@ public class SettingFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+        btn = (Button) view.findViewById(R.id.btn_opensource);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), OpenSourceLicenseActivity.class));
+            }
+        });
         initData();
         return view;
     }
@@ -252,7 +336,7 @@ public class SettingFragment extends Fragment {
     long uid;
 
     private void initData() {
-        NetworkManager.getInstance().getUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
+        NetworkManager.getInstance().getMyUserInfo(getContext(), new NetworkManager.OnResultListener<PersonalData>() {
             @Override
             public void onSuccess(Request request, PersonalData result) {
                 if (result != null) {

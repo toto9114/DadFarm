@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/relation_view"
-        android:padding="16dp">
+        android:padding="12dp"
+        android:id="@+id/linear_edit_relation">
 
 
         <LinearLayout
@@ -39,17 +40,19 @@
                 android:id="@+id/text_of_relation"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:paddingRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text_light_gray" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="232dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edit_relation"
-                android:layout_weight="1"
                 android:background="@drawable/bg_white_background_gray_stroke"
-                android:padding="4dp" />
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/light_black" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,17 +67,19 @@
                 android:id="@+id/text_my_relation"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:paddingRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text_light_gray" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="232dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edit_my_relation"
-                android:layout_weight="1"
                 android:background="@drawable/bg_white_background_gray_stroke"
-                android:padding="4dp" />
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/light_black" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

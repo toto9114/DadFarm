@@ -35,7 +35,7 @@
     <string name="update">업데이트</string>
     <string name="detail_product_info">상세정보</string>
     <string name="back">뒤로</string>
-    <string name="review">구매후기</string>
+    <string name="review">구매후기 (%1$d)</string>
     <string name="order">주문하기</string>
     <string name="seller">판매자</string>
     <string name="product_name">상품명</string>
@@ -56,7 +56,7 @@
     <string name="deposit_account">입금계좌</string>
     <string name="contact_us">문의하기</string>
     <string name="write_reviews">구매후기 작성하기</string>
-    <string name="order_list_title">총 %1$d건의 주문내역이 있습니다.</string>
+    <string name="order_list_title">총 %1$d건의 주문내역이 있습니다</string>
     <string name="empty_regist_product_message">등록된 상품이 없습니다.\n\n아빠, 고모, 삼촌 등 가족들이 정성껏 농사지은 상품을 등록해보세요.</string>
     <string name="add_product_btn">판매상품 등록하기</string>
     <string name="empty_notify_list_message">도착한 알림이 없습니다.</string>
@@ -86,4 +86,16 @@
     <string name="cancel">취소</string>
     <string name="regist_photo_message">멋있게 촬영된 상품 사진을 등록하세요.\n첫번째 사진이 메인 이미지로 노출됩니다.</string>
     <string name="enter_title_hint">제목을 입력하세요. 예)강원도 토종 노란감자</string>
+
+    <string name="complete_order_message">상품을 잘 받으셨나요?\n후기를 작성하고 지인의 상품을 널리 알려보세요!</string>
+    <string name="regist_product_message">주문 내역 관리 및 판매자 프로필 이미지 변경은\n아빠농장 판매자 전용 웹사이트에서 가능합니다.\n\nhttps://pafarm.kr/seller</string>
+    <string name="alert_delete_product_title">중계상품 삭제</string>
+    <string name="alert_delete_product_message">중계중인 상품을 삭제하시겠습니까? 삭제한 상품은 복원이 불가능하니 신중히 진행해주세요.</string>
+    <string name="alert_delete_product_complete_title">중계상품 삭제</string>
+    <string name="alert_delete_product_complete_message">요청하신 상품이 삭제되었습니다. "확인"을 누르시면 상품목록으로 이동합니다.</string>
+
+    <string name="alert_order_my_product_title">주문하기</string>
+    <string name="alert_order_my_product_message">자신이 중계하는 상품은 주문이 불가능합니다.</string>
+
+    <string name="back_pressed_message">뒤로 버튼 한번 더 누르시면 종료됩니다.</string>
 </resources>

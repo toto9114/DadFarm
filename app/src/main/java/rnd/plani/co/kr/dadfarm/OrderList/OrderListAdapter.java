@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import rnd.plani.co.kr.dadfarm.Data.ProductData;
+import rnd.plani.co.kr.dadfarm.Data.OrderResultData;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -16,19 +16,23 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 
 public class OrderListAdapter extends RecyclerView.Adapter {
-    List<ProductData> items = new ArrayList<>();
+    List<OrderResultData> items = new ArrayList<>();
 
-    public void add(ProductData data){
+    public void add(OrderResultData data){
         items.add(data);
         notifyDataSetChanged();
     }
-    public void addAll(List<ProductData> list){
+    public void addAll(List<OrderResultData> list){
         items.addAll(list);
         notifyDataSetChanged();
     }
     public void clear(){
         items.clear();
         notifyDataSetChanged();
+    }
+
+    public OrderResultData getItem(int position){
+        return items.get(position);
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

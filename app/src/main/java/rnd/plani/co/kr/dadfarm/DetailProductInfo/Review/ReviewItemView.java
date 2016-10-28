@@ -5,8 +5,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import rnd.plani.co.kr.dadfarm.Data.PersonalData;
 import rnd.plani.co.kr.dadfarm.Data.ReviewData;
-import rnd.plani.co.kr.dadfarm.DetailProductInfo.Order.OnRelationClickListener;
+import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 
 /**
@@ -14,13 +22,15 @@ import rnd.plani.co.kr.dadfarm.R;
  */
 
 public class ReviewItemView extends RecyclerView.ViewHolder {
-    private OnRelationClickListener relationClickListener;
-    public void setOnRelationClickListener(OnRelationClickListener listener){
-        relationClickListener = listener;
+    private OnProfileClickListener profileClickListener;
+
+    public void setOnProfileClickListener(OnProfileClickListener listener) {
+        profileClickListener = listener;
     }
 
     ImageView profileView;
     TextView nameView, relationView, dateView, contentView, productView;
+
     public ReviewItemView(View itemView) {
         super(itemView);
         profileView = (ImageView) itemView.findViewById(R.id.image_profile);
@@ -32,26 +42,47 @@ public class ReviewItemView extends RecyclerView.ViewHolder {
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(relationClickListener != null){
-                    relationClickListener.OnRelationClick(v,getAdapterPosition());
+                if (profileClickListener != null) {
+                    profileClickListener.OnProfileClick(shopper);
                 }
             }
         });
         profileView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(relationClickListener!=null){
-                    relationClickListener.OnRelationClick(v,getAdapterPosition());
+                if (profileClickListener != null) {
+                    profileClickListener.OnProfileClick(shopper);
                 }
             }
         });
     }
 
-    public void setReview(ReviewData data){
-        nameView.setText(data.name);
-        relationView.setText(data.relation);
-        dateView.setText(data.date);
+    PersonalData shopper;
+    public void setReview(ReviewData data) {
+        shopper = data.order.shopper;
+        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat hourSdf = new SimpleDateFormat("h:mm aa");
+        nameView.setText(data.order.shopper.last_name + data.order.shopper.first_name);
+//        relationView.setText(data.relation);
+        Calendar c = Calendar.getInstance();
+        Calendar tempCalender = Calendar.getInstance();
+        try {
+            Date updated_time = yearSdf.parse(data.updated_time);
+            tempCalender.setTime(updated_time);
+            c.setTime(yearSdf.parse(yearSdf.format(new Date())));
+
+            if (tempCalender.get(Calendar.DAY_OF_MONTH) == c.get(Calendar.DAY_OF_MONTH) && tempCalender.get(Calendar.MONTH) == c.get(Calendar.MONTH)
+                    && tempCalender.get(Calendar.YEAR) == c.get(Calendar.YEAR)) {  //오늘인지 판단
+                dateView.setText(hourSdf.format(updated_time));
+            }else{
+                dateView.setText(yearSdf.format(updated_time));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         contentView.setText(data.content);
-        productView.setText(data.product_name);
+        productView.setText(data.order.product_name + " x " + data.order.quantity);
+        Glide.with(itemView.getContext()).load(data.order.shopper.profile.image_url).into(profileView);
     }
 }

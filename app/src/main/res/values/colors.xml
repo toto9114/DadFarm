@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3d3a38</color>
-    <color name="colorPrimaryDark">#3d3a38</color>
-    <color name="colorAccent">#3d3a38</color>
+    <color name="colorPrimaryDark">#2d2d2d</color>
+    <color name="colorAccent">#2d2d2d</color>
     <color name="white">#fff</color>
 
-    <color name="unselect_tab">#6C6C6C</color>
-    <color name="select_tab">#FF714D</color>
+    <color name="unselect_tab">#5a5a5b</color>
+    <color name="select_tab">#FF714d</color>
+    <color name="tabbar_background">#fafafa</color>
 
     <color name="alert_under_line">#ff0000</color>
-    <color name="black_theme_toolbar">#3d3a38</color>
+    <color name="black_theme_toolbar">#2d2d2d</color>
 
     <color name="blue_gray">#219fc1</color>
-    <color name="red_gray">#ff783f</color>
+    <color name="red_gray">#ff4c00</color>
     <color name="detail_product_layout_background">#ececec</color>
-    
+
     <color name="inactive_button">#949392</color>
     <color name="active_button">#3d3a38</color>
 
@@ -27,4 +28,12 @@
 
     <color name="black">#000</color>
     <color name="gray">#dfdfdf</color>
+
+    <color name="text_darker_black">#de000000</color>
+    <color name="text_light_black">#2a2a2a</color>
+    <color name="text_alpha_light_black">#de2a2a2a</color>
+    <color name="light_black">#3d3a38</color>
+    <color name="text_light_gray">#8a000000</color>
+    <color name="text_red_gray">#deff4c00</color>
+
 </resources>

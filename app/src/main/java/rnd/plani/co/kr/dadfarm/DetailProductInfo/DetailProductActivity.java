@@ -1,14 +1,15 @@
 package rnd.plani.co.kr.dadfarm.DetailProductInfo;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -33,6 +34,7 @@ import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnPhoneCallClickListen
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.OnSmsClickListener;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Relation.RelationInfoActivity;
 import rnd.plani.co.kr.dadfarm.DetailProductInfo.Review.ReviewProductActivity;
+import rnd.plani.co.kr.dadfarm.Manager.PropertyManager;
 import rnd.plani.co.kr.dadfarm.OnProfileClickListener;
 import rnd.plani.co.kr.dadfarm.R;
 import rnd.plani.co.kr.dadfarm.Utils;
@@ -57,9 +59,7 @@ public class DetailProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_product);
         BlackThemeShareToolbar toolbar = (BlackThemeShareToolbar) findViewById(R.id.toolbar);
         toolbar.setToolbar("뒤로", "상세정보", true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+
         product = (ProductData) getIntent().getSerializableExtra(EXTRA_PRODUCT_DATA);
         btnLayout = (LinearLayout) findViewById(R.id.linear_btn);
         recyclerView = (FamiliarRecyclerView) findViewById(R.id.recycler);
@@ -73,7 +73,7 @@ public class DetailProductActivity extends AppCompatActivity {
             public void OnSmsClick(String phoneNum) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.putExtra("sms_body", "This is a test message");
-                intent.setData(Uri.parse("smsto:01012345678; 01098765432"));
+                intent.setData(Uri.parse("smsto:" + phoneNum));
                 startActivity(intent);
             }
         });
@@ -89,7 +89,7 @@ public class DetailProductActivity extends AppCompatActivity {
                                 PERMISSION_REQUEST_PHONE_CALL);
                     }
                 } else {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:010-1234-1234"));
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNum));
                     startActivity(intent);
                 }
             }
@@ -98,6 +98,7 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void OnProfileClick(PersonalData personalData) {
                 Intent i = new Intent(DetailProductActivity.this, RelationInfoActivity.class);
+                i.putExtra(RelationInfoActivity.EXTRA_PERSONAL_DATA, personalData);
                 startActivity(i);
             }
         });
@@ -109,7 +110,7 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DetailProductActivity.this, ReviewProductActivity.class);
-                i.putExtra(ReviewProductActivity.EXTRA_PRODUCT_DATA,product);
+                i.putExtra(ReviewProductActivity.EXTRA_PRODUCT_DATA, product);
                 startActivity(i);
             }
         });
@@ -117,7 +118,25 @@ public class DetailProductActivity extends AppCompatActivity {
         orderView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DetailProductActivity.this, OrderProductActivity.class));
+                if (product.manager.id == PropertyManager.getInstance().getUserId()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailProductActivity.this);
+                    AlertDialog dialog = builder.setTitle(R.string.alert_order_my_product_title)
+                            .setMessage(R.string.alert_order_my_product_message)
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setCancelable(false).create();
+                    dialog.show();
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(DetailProductActivity.this, R.color.blue_gray));
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(DetailProductActivity.this, R.color.red_gray));
+                } else {
+                    Intent i = new Intent(DetailProductActivity.this, OrderProductActivity.class);
+                    i.putExtra(OrderProductActivity.EXTRA_PRODUCT_DATA, product);
+                    startActivity(i);
+                }
             }
         });
 
@@ -146,6 +165,8 @@ public class DetailProductActivity extends AppCompatActivity {
             public void OnRightMenuClick() {
                 //공유하기
                 CustomShareDialog dialog = new CustomShareDialog();
+                Bundle args = new Bundle();
+//                args.putString();
                 dialog.show(getSupportFragmentManager(), "dialog");
 
             }
@@ -191,7 +212,21 @@ public class DetailProductActivity extends AppCompatActivity {
     }
 
     private void initData() {
+//        NetworkManager.getInstance().getMyUserInfo(this, new NetworkManager.OnResultListener<PersonalData>() {
+//            @Override
+//            public void onSuccess(Request request, PersonalData result) {
+//                if(result != null){
+//                    mAdapter.setMyInfo(result);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Request request, int code, Throwable cause) {
+//
+//            }
+//        });
         mAdapter.setProduct(product);
+        reviewView.setText(String.format(getString(R.string.review), product.review_count));
     }
 
     @Override

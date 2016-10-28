@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="16dp">
+    android:paddingTop="25dp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/avatar"
         android:id="@+id/image_profile"
         app:civ_border_color="@android:color/white"
-        app:civ_border_width="1dp"/>
+        app:civ_border_width="2dp"/>
 
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/text_name"
         android:textColor="@android:color/white"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="8dp"
+        android:singleLine="true" />
 </LinearLayout>

@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
+
 import rnd.plani.co.kr.dadfarm.Data.ProductData;
 import rnd.plani.co.kr.dadfarm.R;
 
@@ -22,9 +24,10 @@ public class TitleInfoView extends RecyclerView.ViewHolder {
     }
 
     public void setTitleView(ProductData data){
+        NumberFormat nf= NumberFormat.getInstance();
         titleView.setText(data.title);
         productView.setText(data.name);
-        priceView.setText(data.price);
+        priceView.setText(nf.format(Integer.parseInt(data.price)) + "원");
         addressView.setText(data.address);
     }
 }
